@@ -1,0 +1,2486 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Aventra - Modern AI powered student learning platform"
+    >
+
+    <meta
+        name="theme-color"
+        content="#6c4df6"
+    >
+
+    <title>Aventra | AI Learning Platform</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+<div id="app">
+
+    <!-- =====================================================
+         BACKGROUND
+    ====================================================== -->
+
+    <div class="background-orbs">
+
+        <div class="orb orb-one"></div>
+        <div class="orb orb-two"></div>
+        <div class="orb orb-three"></div>
+
+    </div>
+
+
+    <!-- =====================================================
+         MOBILE OVERLAY
+    ====================================================== -->
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        id="sidebar"
+        class="sidebar"
+    >
+
+        <div class="sidebar-top">
+
+           <div class="brand">
+
+    <div class="brand-logo">
+        <img
+            src="assets/logo.png"
+            alt="Aventra Logo"
+        >
+    </div>
+
+    <div class="brand-text">
+
+        <strong>
+            Aventra
+        </strong>
+
+        <span>
+            Learn • Grow • Achieve
+        </span>
+
+    </div>
+
+</div>
+            <!-- PROFILE -->
+
+            <div class="sidebar-profile">
+
+                <div class="profile-avatar">
+                    S
+                </div>
+
+                <div class="profile-info">
+
+                    <strong id="sidebarStudentName">
+                        Student
+                    </strong>
+
+                    <span id="sidebarStudentClass">
+                        Class 6
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- NAVIGATION -->
+
+            <nav class="main-navigation">
+
+                <div class="nav-section-title">
+                    MAIN MENU
+                </div>
+
+
+                <button
+                    class="nav-item active"
+                    data-page="dashboard"
+                    type="button"
+                >
+
+                    <span class="nav-icon">
+                        🏠
+                    </span>
+
+                    <span class="nav-label">
+                        Dashboard
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="nav-item"
+                    data-page="ai-teacher"
+                    type="button"
+                >
+
+                    <span class="nav-icon">
+                        🤖
+                    </span>
+
+                    <span class="nav-label">
+                        AI Teacher
+                    </span>
+
+                    <span class="nav-badge">
+                        AI
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="nav-item"
+                    data-page="subjects"
+                    type="button"
+                >
+
+                    <span class="nav-icon">
+                        📚
+                    </span>
+
+                    <span class="nav-label">
+                        My Subjects
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="nav-item"
+                    data-page="pdf-library"
+                    type="button"
+                >
+
+                    <span class="nav-icon">
+                        📄
+                    </span>
+
+                    <span class="nav-label">
+                        PDF Library
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="nav-item"
+                    data-page="homework"
+                    type="button"
+                >
+
+                    <span class="nav-icon">
+                        📝
+                    </span>
+
+                    <span class="nav-label">
+                        Homework
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="nav-item"
+                    data-page="quizzes"
+                    type="button"
+                >
+
+                    <span class="nav-icon">
+                        🧠
+                    </span>
+
+                    <span class="nav-label">
+                        Tests & Quizzes
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="nav-item"
+                    data-page="progress"
+                    type="button"
+                >
+
+                    <span class="nav-icon">
+                        📊
+                    </span>
+
+                    <span class="nav-label">
+                        My Progress
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="nav-item"
+                    data-page="achievements"
+                    type="button"
+                >
+
+                    <span class="nav-icon">
+                        🏆
+                    </span>
+
+                    <span class="nav-label">
+                        Achievements
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="nav-item"
+                    data-page="timetable"
+                    type="button"
+                >
+
+                    <span class="nav-icon">
+                        🗓️
+                    </span>
+
+                    <span class="nav-label">
+                        Timetable
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="nav-item live-nav-item"
+                    data-page="live-class"
+                    type="button"
+                >
+
+                    <span class="nav-icon">
+                        🎥
+                    </span>
+
+                    <span class="nav-label">
+                        Live Class
+                    </span>
+
+                    <span class="coming-badge">
+                        Soon
+                    </span>
+
+                </button>
+
+
+    
+
+                </button>
+
+
+                <div class="nav-section-title account-title">
+                    ACCOUNT
+                </div>
+
+
+                <button
+                    class="nav-item"
+                    data-page="settings"
+                    type="button"
+                >
+
+                    <span class="nav-icon">
+                        ⚙️
+                    </span>
+
+                    <span class="nav-label">
+                        Settings
+                    </span>
+
+                </button>
+
+            </nav>
+
+        </div>
+
+
+        <!-- SIDEBAR BOTTOM -->
+
+        <div class="sidebar-bottom">
+
+            <div class="sidebar-mini-card">
+
+                <div class="mini-card-icon">
+                    ✨
+                </div>
+
+                <div>
+
+                    <strong>
+                        Learn smarter
+                    </strong>
+
+                    <span>
+                        Powered by Mira AI
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="sidebar-version">
+                Aventra • v2.0
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN AREA
+    ====================================================== -->
+
+    <main class="main-area">
+
+
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button
+                    id="menuButton"
+                    class="icon-button mobile-menu-button"
+                    type="button"
+                    aria-label="Open menu"
+                >
+                    ☰
+                </button>
+
+
+                <div class="page-heading">
+
+                    <span
+                        id="pageEyebrow"
+                        class="page-eyebrow"
+                    >
+                        WELCOME BACK
+                    </span>
+
+                    <h1 id="pageTitle">
+                        Dashboard
+                    </h1>
+
+                </div>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <!-- SEARCH -->
+
+                <div class="global-search">
+
+                    <span>
+                        🔎
+                    </span>
+
+                    <input
+                        id="globalSearch"
+                        type="search"
+                        placeholder="Search..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <!-- NOTIFICATION -->
+
+                <button
+                    id="notificationButton"
+                    class="icon-button notification-button"
+                    type="button"
+                    aria-label="Notifications"
+                >
+
+                    🔔
+
+                    <span
+                        id="notificationDot"
+                        class="notification-dot"
+                    ></span>
+
+                </button>
+
+
+                <!-- TOP PROFILE -->
+
+                <button
+                    id="topProfileButton"
+                    class="top-profile"
+                    type="button"
+                >
+
+                    <div class="top-avatar">
+                        S
+                    </div>
+
+                    <div class="top-profile-info">
+
+                        <strong id="topStudentName">
+                            Student
+                        </strong>
+
+                        <span id="topStudentClass">
+                            Class 6
+                        </span>
+
+                    </div>
+
+                    <span class="profile-arrow">
+                        ▾
+                    </span>
+
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             CONTENT
+        ================================================== -->
+
+        <div class="page-container">
+
+
+            <!-- =================================================
+                 DASHBOARD
+            ================================================== -->
+
+            <section
+                id="page-dashboard"
+                class="page active-page"
+            >
+
+                <!-- HERO -->
+
+                <div class="dashboard-hero">
+
+                    <div class="hero-content">
+
+                        <span class="eyebrow">
+                            YOUR LEARNING SPACE
+                        </span>
+
+                        <h2>
+                            Learn.
+                            <span>Grow.</span>
+                            Achieve.
+                        </h2>
+
+                        <p>
+                            Welcome back,
+                            <strong id="dashboardStudentName">
+                                Student
+                            </strong>.
+                            Mira is ready to help you learn
+                            smarter today.
+                        </p>
+
+                        <div class="hero-actions">
+
+                            <button
+                                id="startStudyButton"
+                                class="primary-btn"
+                                type="button"
+                            >
+                                <span>🚀</span>
+                                Start Studying
+                            </button>
+
+                            <button
+                                class="secondary-btn"
+                                type="button"
+                                data-page-link="ai-teacher"
+                            >
+                                <span>✨</span>
+                                Ask Mira
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="hero-visual">
+
+                        <div class="hero-orbit orbit-one"></div>
+                        <div class="hero-orbit orbit-two"></div>
+
+                        <div class="hero-ai-card">
+
+                            <div class="ai-card-glow"></div>
+
+                            <div class="ai-avatar-large">
+                                ✨
+                            </div>
+
+                            <strong>
+                                Mira
+                            </strong>
+
+                            <span>
+                                Your AI Teacher
+                            </span>
+
+                            <div class="ai-online">
+                                <i></i>
+                                Online
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STATS -->
+
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon purple">
+                            📚
+                        </div>
+
+                        <div class="stat-data">
+
+                            <span>
+                                Subjects
+                            </span>
+
+                            <strong id="dashboardSubjects">
+                                6
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon blue">
+                            📈
+                        </div>
+
+                        <div class="stat-data">
+
+                            <span>
+                                Overall Progress
+                            </span>
+
+                            <strong>
+                                <span id="dashboardProgress">
+                                    0
+                                </span>%
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon orange">
+                            🔥
+                        </div>
+
+                        <div class="stat-data">
+
+                            <span>
+                                Study Streak
+                            </span>
+
+                            <strong>
+                                <span id="dashboardStreak">
+                                    0
+                                </span>
+                                Days
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon green">
+                            ⭐
+                        </div>
+
+                        <div class="stat-data">
+
+                            <span>
+                                XP Earned
+                            </span>
+
+                            <strong id="dashboardXP">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DASHBOARD GRID -->
+
+                <div class="dashboard-grid">
+
+
+                    <!-- DAILY GOAL -->
+
+                    <div class="glass-card daily-goal-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    TODAY
+                                </span>
+
+                                <h3>
+                                    Daily Study Goal
+                                </h3>
+
+                            </div>
+
+                            <span class="card-icon">
+                                🎯
+                            </span>
+
+                        </div>
+
+
+                        <div class="goal-content">
+
+                            <div class="progress-circle">
+
+                                <svg
+                                    viewBox="0 0 120 120"
+                                >
+
+                                    <circle
+                                        class="circle-bg"
+                                        cx="60"
+                                        cy="60"
+                                        r="50"
+                                    ></circle>
+
+                                    <circle
+                                        id="goalCircle"
+                                        class="circle-progress"
+                                        cx="60"
+                                        cy="60"
+                                        r="50"
+                                    ></circle>
+
+                                </svg>
+
+                                <div class="circle-text">
+
+                                    <strong>
+                                        <span id="goalPercentage">
+                                            0
+                                        </span>%
+                                    </strong>
+
+                                    <span>
+                                        Complete
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="goal-details">
+
+                                <p>
+                                    <strong id="goalMinutes">
+                                        0
+                                    </strong>
+                                    minutes studied
+                                </p>
+
+                                <span>
+                                    Daily target:
+                                    <strong id="goalTarget">
+                                        60
+                                    </strong>
+                                    minutes
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SUBJECT PROGRESS -->
+
+                    <div class="glass-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    YOUR CLASS
+                                </span>
+
+                                <h3>
+                                    Subject Progress
+                                </h3>
+
+                            </div>
+
+                            <button
+                                class="text-button"
+                                type="button"
+                                data-page-link="subjects"
+                            >
+                                View All
+                            </button>
+
+                        </div>
+
+                        <div
+                            id="dashboardSubjectList"
+                            class="subject-progress-list"
+                        ></div>
+
+                    </div>
+
+
+                    <!-- RECENT ACTIVITY -->
+
+                    <div class="glass-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    ACTIVITY
+                                </span>
+
+                                <h3>
+                                    Recent Activity
+                                </h3>
+
+                            </div>
+
+                        </div>
+
+                        <div
+                            id="recentActivity"
+                            class="activity-list"
+                        ></div>
+
+                    </div>
+
+
+                    <!-- UPCOMING -->
+
+                    <div class="glass-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    SCHEDULE
+                                </span>
+
+                                <h3>
+                                    Upcoming Classes
+                                </h3>
+
+                            </div>
+
+                            <button
+                                class="text-button"
+                                type="button"
+                                data-page-link="timetable"
+                            >
+                                Timetable
+                            </button>
+
+                        </div>
+
+                        <div
+                            id="upcomingClasses"
+                            class="upcoming-list"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 AI TEACHER
+            ================================================== -->
+
+            <section
+                id="page-ai-teacher"
+                class="page"
+            >
+
+                <div class="ai-page-layout">
+
+
+                    <!-- AI SIDEBAR -->
+
+                    <aside class="ai-tools-panel">
+
+                        <div class="ai-profile-card">
+
+                            <div class="ai-avatar-large">
+                                ✨
+                            </div>
+
+                            <span class="eyebrow">
+                                AI TEACHER
+                            </span>
+
+                            <h2>
+                                Mira
+                            </h2>
+
+                            <p>
+                                Your personal AI teacher for
+                                Class 6–12.
+                            </p>
+
+                            <div class="ai-online">
+                                <i></i>
+                                Ready to teach
+                            </div>
+
+                        </div>
+
+
+                        <div class="ai-tools-list">
+
+                            <div class="tools-title">
+                                QUICK TOOLS
+                            </div>
+
+
+                            <button
+                                class="ai-tool"
+                                type="button"
+                                data-ai-prompt="Explain today's most important topic for my selected class in a simple way."
+                            >
+
+                                <span>
+                                    💡
+                                </span>
+
+                                <div>
+                                    <strong>
+                                        Explain a Topic
+                                    </strong>
+
+                                    <small>
+                                        Get a simple explanation
+                                    </small>
+                                </div>
+
+                            </button>
+
+
+                            <button
+                                class="ai-tool"
+                                type="button"
+                                data-ai-prompt="Give me 5 useful study tips for my current class."
+                            >
+
+                                <span>
+                                    🎯
+                                </span>
+
+                                <div>
+                                    <strong>
+                                        Study Tips
+                                    </strong>
+
+                                    <small>
+                                        Smart learning strategies
+                                    </small>
+                                </div>
+
+                            </button>
+
+
+                            <button
+                                class="ai-tool"
+                                type="button"
+                                data-ai-prompt="Give me a short revision plan for today."
+                            >
+
+                                <span>
+                                    📖
+                                </span>
+
+                                <div>
+                                    <strong>
+                                        Quick Revision
+                                    </strong>
+
+                                    <small>
+                                        Revise faster
+                                    </small>
+                                </div>
+
+                            </button>
+
+
+                            <button
+                                class="ai-tool"
+                                type="button"
+                                data-ai-prompt="Give me 5 practice questions from my selected class."
+                            >
+
+                                <span>
+                                    🧠
+                                </span>
+
+                                <div>
+                                    <strong>
+                                        Practice
+                                    </strong>
+
+                                    <small>
+                                        Test your knowledge
+                                    </small>
+                                </div>
+
+                            </button>
+
+                        </div>
+
+                    </aside>
+
+
+                    <!-- CHAT -->
+
+                    <div class="ai-chat-panel">
+
+                        <div class="chat-header">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    MIRA AI
+                                </span>
+
+                                <h2>
+                                    Ask Mira Anything
+                                </h2>
+
+                                <p>
+                                    Class-aware AI learning assistant
+                                </p>
+
+                            </div>
+
+                            <div class="chat-status">
+                                <i></i>
+                                Online
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            id="chatMessages"
+                            class="chat-messages"
+                        >
+
+                            <div class="chat-message mira-message">
+
+                                <div class="message-avatar">
+                                    ✨
+                                </div>
+
+                                <div class="message-bubble">
+
+                                    <strong>
+                                        Mira
+                                    </strong>
+
+                                    <p>
+                                        Hi! I'm Mira 👋
+                                        Tell me what you want
+                                        to learn today.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <form
+                            id="chatForm"
+                            class="chat-form"
+                        >
+
+                            <input
+                                id="chatInput"
+                                type="text"
+                                placeholder="Ask Mira a question..."
+                                autocomplete="off"
+                            >
+
+                            <button
+                                type="submit"
+                                class="send-button"
+                                aria-label="Send message"
+                            >
+                                ➤
+                            </button>
+
+                        </form>
+
+
+                        <div class="chat-hint">
+                            Mira answers according to your
+                            selected class.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 SUBJECTS
+            ================================================== -->
+
+            <section
+                id="page-subjects"
+                class="page"
+            >
+
+                <div class="page-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            MY LEARNING
+                        </span>
+
+                        <h2>
+                            My Subjects
+                        </h2>
+
+                        <p>
+                            Subjects and progress for your
+                            selected class.
+                        </p>
+
+                    </div>
+
+            
+
+                </div>
+
+
+                <div
+                    id="subjectsGrid"
+                    class="subjects-grid"
+                ></div>
+
+            </section>
+
+
+            <!-- =================================================
+                 PDF LIBRARY
+            ================================================== -->
+
+            <section
+                id="page-pdf-library"
+                class="page"
+            >
+
+                <div class="page-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            SMART PDF LAB
+                        </span>
+
+                        <h2>
+                            PDF Library
+                        </h2>
+
+                        <p>
+                            Mira can create complete study
+                            PDFs for your class.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- AI PDF GENERATOR -->
+
+                <div class="glass-card ai-pdf-card">
+
+                    <div class="ai-pdf-header">
+
+                        <div class="ai-pdf-icon">
+                            ✨
+                        </div>
+
+                        <div>
+
+                            <span class="eyebrow">
+                                MIRA AI
+                            </span>
+
+                            <h2>
+                                Generate a Study PDF
+                            </h2>
+
+                            <p>
+                                Select a subject and topic.
+                                Mira will create notes and
+                                turn them into a real PDF.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="ai-pdf-form">
+
+                        <div class="form-group">
+
+                            <label for="aiPdfSubject">
+                                Subject
+                            </label>
+
+                            <select id="aiPdfSubject">
+
+                                <option value="">
+                                    Select Subject
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="aiPdfTopic">
+                                Topic
+                            </label>
+
+                            <input
+                                id="aiPdfTopic"
+                                type="text"
+                                placeholder="Example: Fractions"
+                                autocomplete="off"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        id="generatePdfButton"
+                        class="primary-btn ai-generate-pdf-btn"
+                        type="button"
+                    >
+
+                        <span>
+                            ✨
+                        </span>
+
+                        Generate PDF with Mira
+
+                    </button>
+
+
+                    <div
+                        id="generatedPdfStatus"
+                        class="ai-pdf-status"
+                    ></div>
+
+                </div>
+
+
+                <!-- GENERATED -->
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            MIRA GENERATED
+                        </span>
+
+                        <h3>
+                            My AI PDFs
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="generatedPdfList"
+                    class="pdf-grid"
+                ></div>
+
+
+                <!-- UPLOAD -->
+
+                <div class="glass-card upload-pdf-card">
+
+                    <div class="section-icon">
+                        📄
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Add Your Own PDF
+                        </h3>
+
+                        <p>
+                            Keep your personal study PDFs
+                            inside Aventra.
+                        </p>
+
+                    </div>
+
+
+                    <label
+                        for="pdfInput"
+                        class="secondary-btn"
+                    >
+                        Choose PDF
+                    </label>
+
+                    <input
+                        id="pdfInput"
+                        type="file"
+                        accept="application/pdf"
+                        hidden
+                    >
+
+                </div>
+
+
+                <!-- ALL PDFS -->
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            LIBRARY
+                        </span>
+
+                        <h3>
+                            All PDFs
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="pdfList"
+                    class="pdf-grid"
+                ></div>
+
+            </section>
+
+
+            <!-- =================================================
+                 HOMEWORK
+            ================================================== -->
+
+            <section
+                id="page-homework"
+                class="page"
+            >
+
+                <div class="page-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            ASSIGNMENTS
+                        </span>
+
+                        <h2>
+                            Homework
+                        </h2>
+
+                        <p>
+                            Create your own homework or let
+                            Mira generate it.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="homework-layout">
+
+
+                    <!-- CREATE -->
+
+                    <div class="glass-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    CREATE
+                                </span>
+
+                                <h3>
+                                    Add Homework
+                                </h3>
+
+                            </div>
+
+                            <span class="card-icon">
+                                📝
+                            </span>
+
+                        </div>
+
+
+                        <form id="homeworkForm">
+
+                            <div class="form-group">
+
+                                <label for="homeworkTitle">
+                                    Homework Title
+                                </label>
+
+                                <input
+                                    id="homeworkTitle"
+                                    type="text"
+                                    placeholder="Example: Maths Practice"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="homeworkSubject">
+                                    Subject
+                                </label>
+
+                                <select
+                                    id="homeworkSubject"
+                                    required
+                                ></select>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="homeworkDate">
+                                    Due Date
+                                </label>
+
+                                <input
+                                    id="homeworkDate"
+                                    type="date"
+                                >
+
+                            </div>
+
+
+                            <button
+                                type="submit"
+                                class="primary-btn"
+                            >
+                                Add Homework
+                            </button>
+
+                        </form>
+
+                    </div>
+
+
+                    <!-- AI -->
+
+                    <div class="glass-card ai-homework-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    MIRA AI
+                                </span>
+
+                                <h3>
+                                    AI Homework Generator
+                                </h3>
+
+                            </div>
+
+                            <span class="card-icon">
+                                ✨
+                            </span>
+
+                        </div>
+
+
+                        <p class="card-description">
+                            Mira can automatically create
+                            class-appropriate homework with
+                            questions and answers.
+                        </p>
+
+
+                        <div class="ai-homework-preview">
+
+                            <div>
+                                <span>
+                                    CLASS
+                                </span>
+
+                                <strong id="homeworkAIClass">
+                                    Class 6
+                                </strong>
+                            </div>
+
+                            <div>
+                                <span>
+                                    SUBJECT
+                                </span>
+
+                                <strong id="homeworkAISubject">
+                                    Select
+                                </strong>
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            id="generateHomeworkButton"
+                            class="primary-btn"
+                            type="button"
+                            onclick="generateAIHomework()"
+                        >
+
+                            <span>
+                                ✨
+                            </span>
+
+                            Generate with Mira
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            YOUR TASKS
+                        </span>
+
+                        <h3>
+                            Homework List
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="homeworkList"
+                    class="homework-list"
+                ></div>
+
+            </section>
+
+
+            <!-- =================================================
+                 QUIZZES
+            ================================================== -->
+
+            <section
+                id="page-quizzes"
+                class="page"
+            >
+
+                <div class="page-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            TEST YOURSELF
+                        </span>
+
+                        <h2>
+                            Tests & Quizzes
+                        </h2>
+
+                        <p>
+                            10 quizzes for your selected class,
+                            plus AI-generated quizzes by Mira.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- AI QUIZ GENERATOR -->
+
+                <div class="glass-card ai-quiz-generator">
+
+                    <div class="card-heading">
+
+                        <div>
+
+                            <span class="eyebrow">
+                                MIRA AI
+                            </span>
+
+                            <h3>
+                                Generate Custom Quiz
+                            </h3>
+
+                        </div>
+
+                        <span class="card-icon">
+                            🧠
+                        </span>
+
+                    </div>
+
+
+                    <div class="ai-quiz-form">
+
+                        <div class="form-group">
+
+                            <label for="aiQuizSubject">
+                                Subject
+                            </label>
+
+                            <select id="aiQuizSubject"></select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="aiQuizTopic">
+                                Topic
+                            </label>
+
+                            <input
+                                id="aiQuizTopic"
+                                type="text"
+                                placeholder="Example: Light"
+                            >
+
+                        </div>
+
+
+                        <button
+                            id="generateQuizButton"
+                            class="primary-btn"
+                            type="button"
+                        >
+
+                            ✨ Generate AI Quiz
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- 10 QUIZZES -->
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            QUIZ LIBRARY
+                        </span>
+
+                        <h3>
+                            10 Quizzes
+                        </h3>
+
+                    </div>
+
+                    <div class="quiz-count-pill">
+                        10 Available
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="quizGrid"
+                    class="quiz-grid"
+                ></div>
+
+
+                <!-- QUIZ PLAYER -->
+
+                <div
+                    id="quizPlayer"
+                    class="quiz-player hidden"
+                ></div>
+
+            </section>
+
+
+           <section class="page" id="page-progress">
+
+    <div class="page-header">
+        <div>
+            <span class="eyebrow">YOUR LEARNING JOURNEY</span>
+            <h1>My Progress</h1>
+            <p>Track your learning progress across all subjects.</p>
+        </div>
+    </div>
+
+
+    <!-- =====================================================
+         PROGRESS OVERVIEW
+    ====================================================== -->
+
+    <div class="progress-overview-grid">
+
+        <div class="progress-stat-card">
+            <div class="progress-stat-icon">📊</div>
+
+            <div>
+                <span>Overall Progress</span>
+                <strong id="progressOverallValue">0%</strong>
+            </div>
+        </div>
+
+
+        <div class="progress-stat-card">
+            <div class="progress-stat-icon">⏱️</div>
+
+            <div>
+                <span>Study Time</span>
+                <strong id="progressStudyTime">0 min</strong>
+            </div>
+        </div>
+
+
+        <div class="progress-stat-card">
+            <div class="progress-stat-icon">🔥</div>
+
+            <div>
+                <span>Study Streak</span>
+                <strong id="progressStreak">0 days</strong>
+            </div>
+        </div>
+
+
+        <div class="progress-stat-card">
+            <div class="progress-stat-icon">⭐</div>
+
+            <div>
+                <span>Total XP</span>
+                <strong id="progressXP">0 XP</strong>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         CHARTS
+    ====================================================== -->
+
+    <div class="progress-chart-grid">
+
+        <!-- PIE CHART -->
+
+        <div class="progress-chart-card">
+
+            <div class="progress-chart-header">
+                <div>
+                    <span class="chart-eyebrow">
+                        SUBJECT DISTRIBUTION
+                    </span>
+
+                    <h2>Progress Overview</h2>
+
+                    <p>
+                        Your current progress by subject.
+                    </p>
+                </div>
+
+                <span class="chart-badge">🥧 PIE</span>
+            </div>
+
+
+            <div class="pie-chart-wrapper">
+
+                <canvas
+                    id="progressPieChart"
+                    width="420"
+                    height="420"
+                ></canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- BAR CHART -->
+
+        <div class="progress-chart-card">
+
+            <div class="progress-chart-header">
+                <div>
+                    <span class="chart-eyebrow">
+                        SUBJECT PERFORMANCE
+                    </span>
+
+                    <h2>Subject Progress</h2>
+
+                    <p>
+                        Compare your progress in each subject.
+                    </p>
+                </div>
+
+                <span class="chart-badge">📊 BAR</span>
+            </div>
+
+
+            <div class="bar-chart-wrapper">
+
+                <canvas
+                    id="progressBarChart"
+                    width="700"
+                    height="420"
+                ></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SUBJECT PROGRESS
+    ====================================================== -->
+
+    <div class="progress-subject-section">
+
+        <div class="section-heading">
+            <div>
+                <span class="chart-eyebrow">
+                    DETAILED ANALYSIS
+                </span>
+
+                <h2>Subject Performance</h2>
+            </div>
+        </div>
+
+
+        <div
+            id="progressSubjectList"
+            class="progress-subject-list"
+        ></div>
+
+    </div>
+
+
+    <!-- =====================================================
+         EMPTY STATE
+    ====================================================== -->
+
+    <div
+        id="progressEmptyState"
+        class="progress-empty-state"
+        hidden
+    >
+        <div class="empty-icon">📚</div>
+
+        <h3>No progress yet</h3>
+
+        <p>
+            Start studying and your progress will appear here.
+        </p>
+
+        <button
+            type="button"
+            data-page-link="subjects"
+            class="primary-button"
+        >
+            Start Learning
+        </button>
+    </div>
+
+</section>
+            <!-- =================================================
+                 ACHIEVEMENTS
+            ================================================== -->
+
+            <section
+                id="page-achievements"
+                class="page"
+            >
+
+                <div class="page-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            REWARDS
+                        </span>
+
+                        <h2>
+                            Achievements
+                        </h2>
+
+                        <p>
+                            Keep learning and unlock new
+                            achievements.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="achievementsGrid"
+                    class="achievements-grid"
+                ></div>
+
+            </section>
+
+
+            <!-- =================================================
+                 TIMETABLE
+            ================================================== -->
+
+            <section
+                id="page-timetable"
+                class="page"
+            >
+
+                <div class="page-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            PLAN YOUR DAY
+                        </span>
+
+                        <h2>
+                            Timetable
+                        </h2>
+
+                        <p>
+                            Organize your classes and study time.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="timetable-layout">
+
+
+                    <div class="glass-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    SCHEDULE
+                                </span>
+
+                                <h3>
+                                    Add Class
+                                </h3>
+
+                            </div>
+
+                            <span class="card-icon">
+                                🗓️
+                            </span>
+
+                        </div>
+
+
+                        <form id="timetableForm">
+
+                            <div class="form-group">
+
+                                <label for="classTitle">
+                                    Class Name
+                                </label>
+
+                                <input
+                                    id="classTitle"
+                                    type="text"
+                                    placeholder="Example: Maths Class"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="classSubject">
+                                    Subject
+                                </label>
+
+                                <select
+                                    id="classSubject"
+                                    required
+                                ></select>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="classTime">
+                                    Time
+                                </label>
+
+                                <input
+                                    id="classTime"
+                                    type="time"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <button
+                                class="primary-btn"
+                                type="submit"
+                            >
+                                Add to Timetable
+                            </button>
+
+                        </form>
+
+                    </div>
+
+
+                    <div class="glass-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    UPCOMING
+                                </span>
+
+                                <h3>
+                                    My Schedule
+                                </h3>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            id="timetableList"
+                            class="timetable-list"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 LIVE CLASS
+            ================================================== -->
+
+            <section
+                id="page-live-class"
+                class="page"
+            >
+
+                <div class="live-coming-soon">
+
+                    <div class="live-background-ring ring-one"></div>
+                    <div class="live-background-ring ring-two"></div>
+                    <div class="live-background-ring ring-three"></div>
+
+
+                    <div class="live-camera-icon">
+
+                        <div class="camera-body">
+                            🎥
+                        </div>
+
+                    </div>
+
+
+                    <span class="eyebrow">
+                        LIVE CLASS
+                    </span>
+
+
+                    <h2>
+                        Coming Soon
+                    </h2>
+
+
+                    <p>
+                        Interactive live classes are being
+                        prepared for Aventra.
+                    </p>
+
+
+                    <div class="live-status-pill">
+
+                        <span class="pulse-dot"></span>
+
+                        LIVE CLASS IS IN DEVELOPMENT
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- =================================================
+                 SETTINGS
+            ================================================== -->
+
+            <section
+                id="page-settings"
+                class="page"
+            >
+
+                <div class="page-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            ACCOUNT
+                        </span>
+
+                        <h2>
+                            Settings
+                        </h2>
+
+                        <p>
+                            Manage your Aventra learning
+                            preferences.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-layout">
+
+
+                    <!-- PROFILE -->
+
+                    <div class="glass-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    PROFILE
+                                </span>
+
+                                <h3>
+                                    Student Profile
+                                </h3>
+
+                            </div>
+
+                            <span class="card-icon">
+                                👤
+                            </span>
+
+                        </div>
+
+
+                        <div class="settings-profile">
+
+                            <div class="settings-avatar">
+                                S
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    <span id="settingsName">
+                                        Student
+                                    </span>
+                                </strong>
+
+                                <span>
+                                    Aventra Student
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="studentNameInput">
+                                Name
+                            </label>
+
+                            <input
+                                id="studentNameInput"
+                                type="text"
+                                placeholder="Your name"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="classSelector">
+                                Select Class
+                            </label>
+
+                            <select id="classSelector">
+
+                                <option value="6">
+                                    Class 6
+                                </option>
+
+                                <option value="7">
+                                    Class 7
+                                </option>
+
+                                <option value="8">
+                                    Class 8
+                                </option>
+
+                                <option value="9">
+                                    Class 9
+                                </option>
+
+                                <option value="10">
+                                    Class 10
+                                </option>
+
+                                <option value="11">
+                                    Class 11
+                                </option>
+
+                                <option value="12">
+                                    Class 12
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="themeSelector">
+                                Theme
+                            </label>
+
+                            <select id="themeSelector">
+
+                                <option value="dark">
+                                    Dark Premium
+                                </option>
+
+                                <option value="light">
+                                    Light
+                                </option>
+
+                                <option value="midnight">
+                                    Midnight
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <button
+                            id="saveSettingsButton"
+                            class="primary-btn"
+                            type="button"
+                        >
+                            Save Settings
+                        </button>
+
+                    </div>
+
+
+                    <!-- STUDY SETTINGS -->
+
+                    <div class="glass-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    LEARNING
+                                </span>
+
+                                <h3>
+                                    Study Settings
+                                </h3>
+
+                            </div>
+
+                            <span class="card-icon">
+                                🎯
+                            </span>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="dailyGoalInput">
+                                Daily Study Goal
+                            </label>
+
+                            <input
+                                id="dailyGoalInput"
+                                type="number"
+                                min="10"
+                                max="300"
+                                value="60"
+                            >
+
+                            <small>
+                                Set your daily study target
+                                in minutes.
+                            </small>
+
+                        </div>
+
+
+                        <div class="settings-info-box">
+
+                            <span>
+                                💾
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Your progress is saved
+                                </strong>
+
+                                <p>
+                                    Aventra keeps separate
+                                    learning data for each
+                                    class from Class 6 to 12.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     TOAST
+========================================================== -->
+
+<div
+    id="toast"
+    class="toast"
+    role="status"
+    aria-live="polite"
+>
+
+    <span id="toastIcon">
+        ✓
+    </span>
+
+    <span id="toastMessage">
+        Done
+    </span>
+
+</div>
+
+
+<!-- =========================================================
+     MODAL
+========================================================== -->
+
+<div
+    id="modalOverlay"
+    class="modal-overlay hidden"
+>
+
+    <div
+        id="modal"
+        class="modal"
+    >
+
+        <button
+            id="modalClose"
+            class="modal-close"
+            type="button"
+        >
+            ×
+        </button>
+
+        <div id="modalContent"></div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     SCRIPTS
+========================================================== -->
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
