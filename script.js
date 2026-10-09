@@ -16,7 +16,7 @@
    CONFIG
 ========================================================= */
 
-const API_URL = "https://aventra-pearl.vercel.app/";
+const API_URL = "https://aventra-backend-1-t8le.onrender.com";
 const STORAGE_KEY = "aventraStudyData";
 
 const PDF_DB_NAME = "AventraPDFDatabase";
