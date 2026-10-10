@@ -1,4 +1,4 @@
-/* =============================================
+/* =========================================================
    AVENTRA STUDY
    COMPLETE REPAIRED JAVASCRIPT
    Works with the supplied Aventra index.html
@@ -8,13 +8,13 @@
    Homework
    10 quizzes
    Mira AI foundation
-================================================ */
+========================================================= */
 
 "use strict";
 
-/* =============================================
+/* =========================================================
    CONFIG
-================================================ */
+========================================================= */
 
 const API_URL = "https://aventra-backend-1-t8le.onrender.com";
 const STORAGE_KEY = "aventraStudyData";
@@ -23,7 +23,7 @@ const PDF_DB_NAME = "AventraPDFDatabase";
 const PDF_DB_VERSION = 1;
 const PDF_STORE_NAME = "pdfFiles";
 
-/* ======================================================
+/* =========================================================
    DEFAULT DATA
 ========================================================= */
 
@@ -34,7 +34,6 @@ const DEFAULT_DATA = {
         theme: "light"
     },
 
-    
     dailyGoal: 60,
     studyMinutes: 0,
     streak: 0,
@@ -3533,113 +3532,22 @@ function setupMira() {
 
             let response;
 
-           
+            try {
+                response =
+                    await askMiraAPI(
+                        message
+                    );
+            } catch (error) {
+                console.warn(
+                    "Mira API unavailable:",
+                    error
+                );
 
-
-try {
-    const creatorText = String(message)
-        .toLowerCase()
-        .normalize("NFKC")
-        .replace(/[?!.,'"’`।؟]+/g, " ")
-        .replace(/\s+/g, " ")
-        .trim();
-
-    const creatorPatterns = [
-        // English
-        /\bwho\s+(?:is|s|was)\s+your\s+creator\b/,
-        /\bwho\s+created\s+you\b/,
-        /\bwho\s+made\s+you\b/,
-        /\bwho\s+built\s+you\b/,
-        /\bwho\s+programmed\s+you\b/,
-        /\bwho\s+developed\s+you\b/,
-        /\bwho\s+is\s+your\s+maker\b/,
-        /\bwho\s+is\s+your\s+developer\b/,
-        /\bhow\s+is\s+your\s+creator\b/,
-        /\btell\s+me\s+about\s+your\s+creator\b/,
-
-        // Hindi / Hinglish
-        /tumhara creator kaun hai/,
-        /tumhari creator kaun hai/,
-        /aapka creator kaun hai/,
-        /aapki creator kaun hai/,
-        /tumhe kisne banaya/,
-        /tumko kisne banaya/,
-        /aapko kisne banaya/,
-        /kisne tumhe banaya/,
-        /kisne aapko banaya/,
-        /tumhe kisne create kiya/,
-        /tumhe kisne develop kiya/,
-        /tumhara maker kaun hai/,
-        /tumhara developer kaun hai/,
-
-        // Hindi script
-        /तुम्हें किसने बनाया/,
-        /तुमको किसने बनाया/,
-        /आपको किसने बनाया/,
-        /तुम्हारा निर्माता कौन है/,
-        /तुम्हारी निर्माता कौन है/,
-        /आपका निर्माता कौन है/,
-        /तुम्हें किसने बनाया है/,
-        /तुम्हारा क्रिएटर कौन है/,
-        /तुम्हारी क्रिएटर कौन है/,
-        /आपका क्रिएटर कौन है/,
-        /आपकी क्रिएटर कौन है/,
-
-        // Spanish
-        /quien te creo/,
-        /quien te hizo/,
-
-        // French
-        /qui t a creee/,
-        /qui t a cree/,
-        /qui t a faite/,
-
-        // German
-        /wer hat dich erschaffen/,
-        /wer hat dich gemacht/,
-
-        // Portuguese
-        /quem te criou/,
-        /quem fez voce/,
-
-        // Italian
-        /chi ti ha creato/,
-        /chi ti ha fatto/,
-
-        // Japanese
-        /あなたを作ったのは誰/,
-        /誰があなたを作った/,
-
-        // Chinese
-        /谁创造了你/,
-        /谁制作了你/,
-
-        // Korean
-        /누가 너를 만들었어/,
-        /누가 당신을 만들었나요/,
-
-        // Russian
-        /кто тебя создал/,
-        /кто тебя сделал/
-    ];
-
-    const isCreatorQuestion =
-        creatorPatterns.some(pattern =>
-            pattern.test(creatorText)
-        );
-
-    if (isCreatorQuestion) {
-        response = "Surbhi is my creator.";
-    } else {
-        response = await askMiraAPI(message);
-    }
-
-} catch (error) {
-    console.warn("Mira API unavailable:", error);
-    response = generateLocalMiraAnswer(message);
-}
-
-
+                response =
+                    generateLocalMiraAnswer(
+                        message
+                    );
+            }
 
             typing.remove();
 
@@ -3769,26 +3677,6 @@ function generateLocalMiraAnswer(
     const text =
         String(message)
             .toLowerCase();
-
-            
-
-// =========================================================
-// MIRA CREATOR COMMAND — SURBHI
-// =========================================================
-
-const creatorText = String(message)
-    .toLowerCase()
-    .replace(/[?!.,'"’]/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
-
-const creatorQuestion =
-    /\b(who is your creator|who's your creator|whos your creator|who created you|who made you|who is your maker|who is your developer|who developed you|how is your creator|how is your creator doing|tell me about your creator|who built you|who programmed you)\b/i;
-
-if (creatorQuestion.test(creatorText)) {
-    return "Surbhi is my creator and developer.";
-}
-
 
     const classNumber =
         getCurrentClass();
@@ -5703,85 +5591,6 @@ function renderProgressPage() {
 
     drawProgressBarChart();
 }
-
-
-
-/* ==========================================
-   AVENTRA MOBILE SIDEBAR CONTROLS
-========================================== */
-
-(() => {
-    const menuButton = document.getElementById("menuButton");
-    const sidebar = document.getElementById("sidebar");
-    const overlay = document.getElementById("sidebarOverlay");
-
-    if (!menuButton || !sidebar || !overlay) {
-        console.warn(
-            "Aventra mobile menu: required HTML elements were not found."
-        );
-        return;
-    }
-
-    const mobileScreen = () => window.innerWidth <= 768;
-
-    function openSidebar() {
-        if (!mobileScreen()) return;
-
-        sidebar.classList.add("mobile-sidebar-open");
-        overlay.classList.add("mobile-overlay-visible");
-
-        menuButton.setAttribute("aria-expanded", "true");
-        menuButton.setAttribute("aria-label", "Close menu");
-
-        document.body.style.overflow = "hidden";
-    }
-
-    function closeSidebar() {
-        sidebar.classList.remove("mobile-sidebar-open");
-        overlay.classList.remove("mobile-overlay-visible");
-
-        menuButton.setAttribute("aria-expanded", "false");
-        menuButton.setAttribute("aria-label", "Open menu");
-
-        document.body.style.overflow = "";
-    }
-
-    menuButton.addEventListener("click", () => {
-        const isOpen = sidebar.classList.contains(
-            "mobile-sidebar-open"
-        );
-
-        if (isOpen) {
-            closeSidebar();
-        } else {
-            openSidebar();
-        }
-    });
-
-    overlay.addEventListener("click", closeSidebar);
-
-    sidebar.addEventListener("click", (event) => {
-        const navButton = event.target.closest(
-            ".nav-item, [data-page-link]"
-        );
-
-        if (navButton && mobileScreen()) {
-            closeSidebar();
-        }
-    });
-
-    document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") {
-            closeSidebar();
-        }
-    });
-
-    window.addEventListener("resize", () => {
-        if (!mobileScreen()) {
-            closeSidebar();
-        }
-    });
-})();
 
 /* =========================================================
    END
