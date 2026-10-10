@@ -3555,11 +3555,13 @@ try {
         /\bwho\s+is\s+your\s+maker\b/,
         /\bwho\s+is\s+your\s+developer\b/,
         /\bhow\s+is\s+your\s+creator\b/,
+        /\bhow\s+is\s+your\s+creater\b/,
         /\btell\s+me\s+about\s+your\s+creator\b/,
 
         // Hindi / Hinglish
         /tumhara creator kaun hai/,
         /tumhari creator kaun hai/,
+        /tumhari creater kaun hai/,
         /aapka creator kaun hai/,
         /aapki creator kaun hai/,
         /tumhe kisne banaya/,
