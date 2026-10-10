@@ -1,5676 +1,2486 @@
-/* =============================================
-   AVENTRA STUDY
-   COMPLETE REPAIRED JAVASCRIPT
-   Works with the supplied Aventra index.html
-   Class 6–12
-   Real PDF storage with IndexedDB
-   Local progress storage
-   Homework
-   10 quizzes
-   Mira AI foundation
-================================================ */
+<!DOCTYPE html>
+<html lang="en">
 
-"use strict";
+<head>
 
-/* =============================================
-   CONFIG
-================================================ */
+    <meta charset="UTF-8">
 
-const API_URL = "https://aventra-backend-1-t8le.onrender.com";
-const STORAGE_KEY = "aventraStudyData";
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-const PDF_DB_NAME = "AventraPDFDatabase";
-const PDF_DB_VERSION = 1;
-const PDF_STORE_NAME = "pdfFiles";
+    <meta
+        name="description"
+        content="Aventra - Modern AI powered student learning platform"
+    >
 
-/* ======================================================
-   DEFAULT DATA
-========================================================= */
+    <meta
+        name="theme-color"
+        content="#6c4df6"
+    >
 
-const DEFAULT_DATA = {
-    profile: {
-        name: "Student",
-        class: 6,
-        theme: "light"
-    },
+    <title>Aventra | AI Learning Platform</title>
 
-    dailyGoal: 60,
-    studyMinutes: 0,
-    streak: 0,
-    xp: 0,
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
 
-    classData: {},
-    subjects: {},
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
 
-    homework: [],
-    timetable: [],
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
 
-    pdfs: [],
-    activity: [],
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
-    quizResults: {},
-    aiQuizResults: [],
+</head>
 
-    achievements: {},
 
-    chat: [],
+<body>
 
-    notifications: []
-};
+<div id="app">
 
-/* =========================================================
-   SUBJECTS
-========================================================= */
+    <!-- =====================================================
+         BACKGROUND
+    ====================================================== -->
 
-const CLASS_SUBJECTS = {
-    6: [
-        ["Mathematics", "📐"],
-        ["Science", "🔬"],
-        ["English", "📖"],
-        ["Hindi", "📝"],
-        ["Social Science", "🌍"],
-        ["Computer", "💻"]
-    ],
+    <div class="background-orbs">
 
-    7: [
-        ["Mathematics", "📐"],
-        ["Science", "🔬"],
-        ["English", "📖"],
-        ["Hindi", "📝"],
-        ["Social Science", "🌍"],
-        ["Computer", "💻"]
-    ],
+        <div class="orb orb-one"></div>
+        <div class="orb orb-two"></div>
+        <div class="orb orb-three"></div>
 
-    8: [
-        ["Mathematics", "📐"],
-        ["Science", "🔬"],
-        ["English", "📖"],
-        ["Hindi", "📝"],
-        ["Social Science", "🌍"],
-        ["Computer", "💻"]
-    ],
+    </div>
 
-    9: [
-        ["Mathematics", "📐"],
-        ["Science", "🔬"],
-        ["English", "📖"],
-        ["Hindi", "📝"],
-        ["Social Science", "🌍"],
-        ["Computer", "💻"]
-    ],
 
-    10: [
-        ["Mathematics", "📐"],
-        ["Science", "🔬"],
-        ["English", "📖"],
-        ["Hindi", "📝"],
-        ["Social Science", "🌍"],
-        ["Computer", "💻"]
-    ],
+    <!-- =====================================================
+         MOBILE OVERLAY
+    ====================================================== -->
 
-    11: [
-        ["Mathematics", "📐"],
-        ["Physics", "⚛️"],
-        ["Chemistry", "🧪"],
-        ["English", "📖"],
-        ["Computer Science", "💻"],
-        ["Biology", "🧬"]
-    ],
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
 
-    12: [
-        ["Mathematics", "📐"],
-        ["Physics", "⚛️"],
-        ["Chemistry", "🧪"],
-        ["English", "📖"],
-        ["Computer Science", "💻"],
-        ["Biology", "🧬"]
-    ]
-};
 
-/* =========================================================
-   QUIZ DATA
-========================================================= */
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
 
-const QUIZZES = {
-    6: [
-        {
-            id: "math-6",
-            title: "Mathematics Basics",
-            subject: "Mathematics",
-            icon: "📐",
-            questions: [
-                {
-                    q: "What is 12 × 5?",
-                    options: ["50", "60", "70", "80"],
-                    answer: 1
-                },
-                {
-                    q: "Which number is prime?",
-                    options: ["12", "15", "17", "21"],
-                    answer: 2
-                },
-                {
-                    q: "What is 100 ÷ 4?",
-                    options: ["20", "25", "30", "40"],
-                    answer: 1
-                }
-            ]
-        },
+    <aside
+        id="sidebar"
+        class="sidebar"
+    >
 
-        {
-            id: "science-6",
-            title: "Science Explorer",
-            subject: "Science",
-            icon: "🔬",
-            questions: [
-                {
-                    q: "Which organ helps humans breathe?",
-                    options: ["Heart", "Lungs", "Stomach", "Brain"],
-                    answer: 1
-                },
-                {
-                    q: "Plants prepare food by which process?",
-                    options: [
-                        "Respiration",
-                        "Photosynthesis",
-                        "Digestion",
-                        "Evaporation"
-                    ],
-                    answer: 1
-                },
-                {
-                    q: "Which is a natural source of light?",
-                    options: ["Bulb", "Candle", "Sun", "Torch"],
-                    answer: 2
-                }
-            ]
-        },
+        <div class="sidebar-top">
 
-        {
-            id: "english-6",
-            title: "English Grammar",
-            subject: "English",
-            icon: "📖",
-            questions: [
-                {
-                    q: "Choose the noun: 'The girl reads a book.'",
-                    options: ["reads", "the", "girl", "a"],
-                    answer: 2
-                },
-                {
-                    q: "What is the past tense of 'go'?",
-                    options: ["goed", "went", "going", "goes"],
-                    answer: 1
-                },
-                {
-                    q: "Which word is an adjective?",
-                    options: ["beautiful", "run", "quickly", "sing"],
-                    answer: 0
-                }
-            ]
-        },
+           <div class="brand">
 
-        {
-            id: "hindi-6",
-            title: "Hindi Practice",
-            subject: "Hindi",
-            icon: "📝",
-            questions: [
-                {
-                    q: "‘जल’ का समानार्थी शब्द क्या है?",
-                    options: ["आकाश", "पानी", "अग्नि", "धरती"],
-                    answer: 1
-                },
-                {
-                    q: "‘दिन’ का विलोम क्या है?",
-                    options: ["सुबह", "शाम", "रात", "दोपहर"],
-                    answer: 2
-                },
-                {
-                    q: "‘सुंदर’ किस प्रकार का शब्द है?",
-                    options: ["संज्ञा", "सर्वनाम", "विशेषण", "क्रिया"],
-                    answer: 2
-                }
-            ]
-        },
+    <div class="brand-logo">
+        <img
+            src="assets/logo.png"
+            alt="Aventra Logo"
+        >
+    </div>
 
-        {
-            id: "sst-6",
-            title: "Social Science",
-            subject: "Social Science",
-            icon: "🌍",
-            questions: [
-                {
-                    q: "Which planet do we live on?",
-                    options: ["Mars", "Earth", "Venus", "Jupiter"],
-                    answer: 1
-                },
-                {
-                    q: "A map represents what?",
-                    options: [
-                        "A place",
-                        "A person",
-                        "A sound",
-                        "A story"
-                    ],
-                    answer: 0
-                },
-                {
-                    q: "Which is a continent?",
-                    options: ["India", "Asia", "Delhi", "Ganga"],
-                    answer: 1
-                }
-            ]
-        },
+    <div class="brand-text">
 
-        {
-            id: "computer-6",
-            title: "Computer Basics",
-            subject: "Computer",
-            icon: "💻",
-            questions: [
-                {
-                    q: "What does CPU stand for?",
-                    options: [
-                        "Central Processing Unit",
-                        "Computer Power Unit",
-                        "Central Program Utility",
-                        "Control Processing User"
-                    ],
-                    answer: 0
-                },
-                {
-                    q: "Which device is used to type?",
-                    options: ["Monitor", "Keyboard", "Speaker", "Printer"],
-                    answer: 1
-                },
-                {
-                    q: "Which is an input device?",
-                    options: ["Mouse", "Monitor", "Speaker", "Projector"],
-                    answer: 0
-                }
-            ]
-        }
-    ]
-};
+        <strong>
+            Aventra
+        </strong>
 
-/* =========================================================
-   STATE
-========================================================= */
+        <span>
+            Learn • Grow • Achieve
+        </span>
 
-let data = loadData();
+    </div>
 
-let currentQuiz = null;
-let currentQuestion = 0;
-let currentQuizScore = 0;
+</div>
+            <!-- PROFILE -->
 
-let studyTimer = null;
-let studySeconds = 0;
+            <div class="sidebar-profile">
 
-let toastTimer = null;
-let miraInitialized = false;
-
-/* =========================================================
-   HELPERS
-========================================================= */
-
-const $ = selector => document.querySelector(selector);
-
-const $$ = selector => document.querySelectorAll(selector);
-
-function createID() {
-    return (
-        Date.now().toString(36) +
-        Math.random().toString(36).slice(2, 9)
-    );
-}
-
-function escapeHTML(value) {
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
-function formatBytes(bytes) {
-    const value = Number(bytes) || 0;
-
-    if (value === 0) {
-        return "0 Bytes";
-    }
-
-    const units = ["Bytes", "KB", "MB", "GB"];
-
-    const index = Math.min(
-        Math.floor(Math.log(value) / Math.log(1024)),
-        units.length - 1
-    );
-
-    return `${(
-        value / Math.pow(1024, index)
-    ).toFixed(index === 0 ? 0 : 1)} ${units[index]}`;
-}
-
-function formatDate(dateValue) {
-    if (!dateValue) {
-        return "No date";
-    }
-
-    const date = new Date(dateValue);
-
-    if (Number.isNaN(date.getTime())) {
-        return String(dateValue);
-    }
-
-    return date.toLocaleDateString("en-IN", {
-        day: "numeric",
-        month: "short",
-        year: "numeric"
-    });
-}
-
-function formatTime(timeValue) {
-    if (!timeValue) {
-        return "";
-    }
-
-    const parts = String(timeValue).split(":");
-
-    if (parts.length < 2) {
-        return timeValue;
-    }
-
-    let hour = Number(parts[0]);
-    const minute = parts[1];
-
-    const suffix = hour >= 12 ? "PM" : "AM";
-
-    hour = hour % 12;
-
-    if (hour === 0) {
-        hour = 12;
-    }
-
-    return `${hour}:${minute} ${suffix}`;
-}
-
-function cloneData(value) {
-    return JSON.parse(JSON.stringify(value));
-}
-
-/* =========================================================
-   DATA
-========================================================= */
-
-function createEmptyClassData(classNumber) {
-    const subjects = {};
-
-    const classSubjects =
-        CLASS_SUBJECTS[classNumber] ||
-        CLASS_SUBJECTS[6];
-
-    classSubjects.forEach(([name]) => {
-        subjects[name] = {
-            progress: 0,
-            studiedMinutes: 0,
-            quizzes: 0
-        };
-    });
-
-    return {
-        subjects
-    };
-}
-
-function createDefaultData() {
-    const result = cloneData(DEFAULT_DATA);
-
-    result.classData = {};
-
-    Object.keys(CLASS_SUBJECTS).forEach(classNumber => {
-        result.classData[classNumber] =
-            createEmptyClassData(Number(classNumber));
-    });
-
-    result.profile.class = 6;
-
-    result.subjects =
-        result.classData["6"].subjects;
-
-    return result;
-}
-
-function mergeData(defaults, saved) {
-    const merged = {
-        ...defaults,
-        ...(saved || {})
-    };
-
-    merged.profile = {
-        ...defaults.profile,
-        ...((saved && saved.profile) || {})
-    };
-
-    merged.classData = {
-        ...defaults.classData,
-        ...((saved && saved.classData) || {})
-    };
-
-    Object.keys(CLASS_SUBJECTS).forEach(classNumber => {
-        if (!merged.classData[classNumber]) {
-            merged.classData[classNumber] =
-                createEmptyClassData(Number(classNumber));
-        }
-
-        if (!merged.classData[classNumber].subjects) {
-            merged.classData[classNumber].subjects = {};
-        }
-
-        const subjects =
-            merged.classData[classNumber].subjects;
-
-        CLASS_SUBJECTS[classNumber].forEach(([name]) => {
-            if (!subjects[name]) {
-                subjects[name] = {
-                    progress: 0,
-                    studiedMinutes: 0,
-                    quizzes: 0
-                };
-            }
-        });
-    });
-
-    merged.homework =
-        Array.isArray(saved?.homework)
-            ? saved.homework
-            : [];
-
-    merged.timetable =
-        Array.isArray(saved?.timetable)
-            ? saved.timetable
-            : [];
-
-    merged.pdfs =
-        Array.isArray(saved?.pdfs)
-            ? saved.pdfs
-            : [];
-
-    merged.activity =
-        Array.isArray(saved?.activity)
-            ? saved.activity
-            : [];
-
-    merged.chat =
-        Array.isArray(saved?.chat)
-            ? saved.chat
-            : [];
-
-    merged.notifications =
-        Array.isArray(saved?.notifications)
-            ? saved.notifications
-            : [];
-
-    merged.achievements =
-        saved?.achievements || {};
-
-    merged.quizResults =
-        saved?.quizResults &&
-        !Array.isArray(saved.quizResults)
-            ? saved.quizResults
-            : {};
-
-    merged.aiQuizResults =
-        Array.isArray(saved?.aiQuizResults)
-            ? saved.aiQuizResults
-            : [];
-
-    const currentClass =
-        String(Number(merged.profile.class) || 6);
-
-    merged.subjects =
-        merged.classData[currentClass].subjects;
-
-    return merged;
-}
-
-function loadData() {
-    try {
-        const saved =
-            localStorage.getItem(STORAGE_KEY);
-
-        if (!saved) {
-            return createDefaultData();
-        }
-
-        return mergeData(
-            createDefaultData(),
-            JSON.parse(saved)
-        );
-    } catch (error) {
-        console.error(
-            "Aventra data load error:",
-            error
-        );
-
-        return createDefaultData();
-    }
-}
-
-function saveData() {
-    try {
-        const currentClass =
-            String(getCurrentClass());
-
-        if (
-            data.classData &&
-            data.classData[currentClass]
-        ) {
-            data.classData[currentClass].subjects =
-                data.subjects || {};
-        }
-
-        localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(data)
-        );
-
-if (
-    document
-        .getElementById("page-progress")
-        ?.classList.contains("active-page")
-) {
-    renderProgressPage();
-}
-
-    } catch (error) {
-        console.error(
-            "Could not save Aventra data:",
-            error
-        );
-    }
-}
-
-
-
-/* =========================================================
-   CLASS
-========================================================= */
-
-function getCurrentClass() {
-    return Number(data.profile.class) || 6;
-}
-
-function getCurrentClassKey() {
-    return String(getCurrentClass());
-}
-
-function getCurrentSubjects() {
-    return (
-        CLASS_SUBJECTS[getCurrentClass()] ||
-        CLASS_SUBJECTS[6]
-    );
-}
-
-function ensureSubjectsForClass() {
-    const classNumber = getCurrentClass();
-    const classKey = String(classNumber);
-
-    if (!data.classData) {
-        data.classData = {};
-    }
-
-    if (!data.classData[classKey]) {
-        data.classData[classKey] =
-            createEmptyClassData(classNumber);
-    }
-
-    const subjects =
-        data.classData[classKey].subjects;
-
-    CLASS_SUBJECTS[classNumber].forEach(([name]) => {
-        if (!subjects[name]) {
-            subjects[name] = {
-                progress: 0,
-                studiedMinutes: 0,
-                quizzes: 0
-            };
-        }
-    });
-
-    const validSubjects = new Set(
-        CLASS_SUBJECTS[classNumber].map(
-            ([name]) => name
-        )
-    );
-
-    Object.keys(subjects).forEach(name => {
-        if (!validSubjects.has(name)) {
-            delete subjects[name];
-        }
-    });
-
-    data.subjects = subjects;
-
-    saveData();
-}
-
-function changeStudentClass(newClass) {
-    const classNumber = Number(newClass);
-
-    if (!CLASS_SUBJECTS[classNumber]) {
-        return;
-    }
-
-    const oldClass = getCurrentClassKey();
-
-    if (
-        data.classData &&
-        data.classData[oldClass]
-    ) {
-        data.classData[oldClass].subjects =
-            data.subjects || {};
-    }
-
-    data.profile.class = classNumber;
-
-    if (!data.classData[String(classNumber)]) {
-        data.classData[String(classNumber)] =
-            createEmptyClassData(classNumber);
-    }
-
-    data.subjects =
-        data.classData[String(classNumber)].subjects;
-
-    ensureSubjectsForClass();
-
-    updateProfileUI();
-
-    renderAll();
-
-    addActivity(
-        `Switched to Class ${classNumber}`,
-        "🎓"
-    );
-
-    showToast(
-        `Now studying in Class ${classNumber}`,
-        "🎓"
-    );
-}
-
-/* =========================================================
-   PROGRESS
-========================================================= */
-
-function calculateOverallProgress() {
-    const subjects = getCurrentSubjects();
-
-    if (!subjects.length) {
-        return 0;
-    }
-
-    const total = subjects.reduce(
-        (sum, [name]) => {
-            return (
-                sum +
-                Number(
-                    data.subjects[name]?.progress || 0
-                )
-            );
-        },
-        0
-    );
-
-    return Math.round(
-        total / subjects.length
-    );
-}
-
-function updateSubjectProgress(
-    subject,
-    amount
-) {
-    if (!data.subjects[subject]) {
-        return;
-    }
-
-    data.subjects[subject].progress =
-        Math.max(
-            0,
-            Math.min(
-                100,
-                Number(
-                    data.subjects[subject].progress
-                ) + Number(amount)
-            )
-        );
-
-    saveData();
-
-    renderAll();
-}
-
-/* =========================================================
-   ACTIVITY
-========================================================= */
-
-function addActivity(
-    text,
-    icon = "✨"
-) {
-    if (!Array.isArray(data.activity)) {
-        data.activity = [];
-    }
-
-    data.activity.unshift({
-        id: createID(),
-        text,
-        icon,
-        classNumber: getCurrentClass(),
-        time: new Date().toISOString()
-    });
-
-    data.activity =
-        data.activity.slice(0, 30);
-
-    saveData();
-}
-
-/* =========================================================
-   XP
-========================================================= */
-
-function addXP(amount, reason = "") {
-    const value = Math.max(
-        0,
-        Number(amount) || 0
-    );
-
-    data.xp =
-        Number(data.xp || 0) + value;
-
-    if (reason) {
-        addActivity(
-            `${reason} +${value} XP`,
-            "⭐"
-        );
-    }
-
-    saveData();
-
-    updateDashboard();
-    updateAchievements();
-}
-
-/* =========================================================
-   NAVIGATION
-========================================================= */
-
-function setupNavigation() {
-    $$(".nav-item").forEach(button => {
-        if (
-            button.dataset.navigationReady ===
-            "true"
-        ) {
-            return;
-        }
-
-        button.dataset.navigationReady = "true";
-
-        button.addEventListener(
-            "click",
-            () => {
-                const page =
-                    button.dataset.page;
-
-                if (page) {
-                    navigateTo(page);
-                }
-            }
-        );
-    });
-
-    $$("[data-page-link]").forEach(button => {
-        if (
-            button.dataset.navigationReady ===
-            "true"
-        ) {
-            return;
-        }
-
-        button.dataset.navigationReady = "true";
-
-        button.addEventListener(
-            "click",
-            event => {
-                event.preventDefault();
-
-                const page =
-                    button.dataset.pageLink;
-
-                if (page) {
-                    navigateTo(page);
-                }
-            }
-        );
-    });
-
-    $$("[data-page-action]").forEach(button => {
-        if (
-            button.dataset.navigationReady ===
-            "true"
-        ) {
-            return;
-        }
-
-        button.dataset.navigationReady = "true";
-
-        button.addEventListener(
-            "click",
-            () => {
-                const page =
-                    button.dataset.pageAction;
-
-                if (page) {
-                    navigateTo(page);
-                }
-            }
-        );
-    });
-
-    $("#topProfileButton")?.addEventListener(
-        "click",
-        () => navigateTo("settings")
-    );
-}
-
-function navigateTo(pageName) {
-    $$(".page").forEach(page => {
-        page.classList.remove(
-            "active-page"
-        );
-    });
-
-    const target =
-        $(`#page-${pageName}`);
-
-    if (!target) {
-        return;
-    }
-
-    target.classList.add(
-        "active-page"
-    );
-
-    if (pageName === "progress") {
-    setTimeout(() => {
-        renderProgressPage();
-    }, 50);
-}
-
-    $$(".nav-item").forEach(button => {
-        button.classList.toggle(
-            "active",
-            button.dataset.page ===
-                pageName
-        );
-    });
-
-    const titles = {
-        dashboard: "Dashboard",
-        "ai-teacher": "AI Teacher",
-        subjects: "My Subjects",
-        "pdf-library": "PDF Library",
-        homework: "Homework",
-        quizzes: "Tests & Quizzes",
-        progress: "My Progress",
-        achievements: "Achievements",
-        timetable: "Timetable",
-        "live-class": "Live Class",
-        batch: "My Batch",
-        settings: "Settings"
-    };
-
-    if ($("#pageTitle")) {
-        $("#pageTitle").textContent =
-            titles[pageName] || "Aventra";
-    }
-
-    closeSidebar();
-
-    if (pageName === "dashboard") {
-        updateDashboard();
-    }
-
-    if (pageName === "subjects") {
-        renderSubjects();
-    }
-
-    if (pageName === "pdf-library") {
-        renderPDFLists();
-        populateSubjectSelects();
-    }
-
-    if (pageName === "homework") {
-        renderHomework();
-        populateSubjectSelects();
-    }
-
-    if (pageName === "quizzes") {
-        renderQuizLibrary();
-        populateSubjectSelects();
-    }
-
-    if (pageName === "progress") {
-        renderProgress();
-    }
-
-    if (pageName === "achievements") {
-        renderAchievements();
-    }
-
-    if (pageName === "timetable") {
-        renderTimetable();
-    }
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-}
-
-function openPage(pageName) {
-    navigateTo(pageName);
-}
-
-/* =========================================================
-   MOBILE MENU
-========================================================= */
-
-function setupMobileMenu() {
-    const menuButton =
-        $("#menuButton");
-
-    const sidebar =
-        $("#sidebar");
-
-    const overlay =
-        $("#sidebarOverlay");
-
-    menuButton?.addEventListener(
-        "click",
-        () => {
-            sidebar?.classList.toggle(
-                "open"
-            );
-
-            overlay?.classList.toggle(
-                "show"
-            );
-        }
-    );
-
-    overlay?.addEventListener(
-        "click",
-        closeSidebar
-    );
-}
-
-function closeSidebar() {
-    $("#sidebar")?.classList.remove(
-        "open"
-    );
-
-    $("#sidebarOverlay")?.classList.remove(
-        "show"
-    );
-}
-
-/* =========================================================
-   PROFILE UI
-========================================================= */
-
-function updateProfileUI() {
-    const name =
-        data.profile.name ||
-        "Student";
-
-    const classNumber =
-        getCurrentClass();
-
-    $("#sidebarStudentName")?.replaceChildren(
-        document.createTextNode(name)
-    );
-
-    $("#topStudentName")?.replaceChildren(
-        document.createTextNode(name)
-    );
-
-    $("#dashboardStudentName")?.replaceChildren(
-        document.createTextNode(name)
-    );
-
-    if ($("#studentNameInput")) {
-        $("#studentNameInput").value =
-            name;
-    }
-
-    if ($("#settingsName")) {
-        $("#settingsName").textContent =
-            name;
-    }
-
-    if ($("#sidebarStudentClass")) {
-        $("#sidebarStudentClass").textContent =
-            `Class ${classNumber}`;
-    }
-
-    if ($("#topStudentClass")) {
-        $("#topStudentClass").textContent =
-            `Class ${classNumber}`;
-    }
-
-    if ($("#batchName")) {
-        $("#batchName").textContent =
-            `Aventra Class ${classNumber}`;
-    }
-
-    if ($("#classSelector")) {
-        $("#classSelector").value =
-            String(classNumber);
-    }
-
-    if ($("#dailyGoalInput")) {
-        $("#dailyGoalInput").value =
-            data.dailyGoal || 60;
-    }
-
-    if ($("#themeSelector")) {
-        $("#themeSelector").value =
-            data.profile.theme ||
-            "light";
-    }
-
-    updateAvatarLetters(name);
-}
-
-function updateAvatarLetters(name) {
-    const letter =
-        String(name || "Student")
-            .trim()
-            .charAt(0)
-            .toUpperCase() || "S";
-
-    $$(".profile-avatar, .top-avatar, .settings-avatar")
-        .forEach(element => {
-            element.textContent =
-                letter;
-        });
-}
-
-/* =========================================================
-   THEME
-========================================================= */
-
-function applyTheme() {
-    const theme =
-        data.profile.theme ||
-        "light";
-
-    document.documentElement.setAttribute(
-        "data-theme",
-        theme
-    );
-
-    document.body?.setAttribute(
-        "data-theme",
-        theme
-    );
-}
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-function showToast(
-    message,
-    icon = "✓"
-) {
-    const toast =
-        $("#toast");
-
-    const toastMessage =
-        $("#toastMessage");
-
-    const toastIcon =
-        $("#toastIcon");
-
-    if (!toast) {
-        console.log(message);
-        return;
-    }
-
-    if (toastMessage) {
-        toastMessage.textContent =
-            message;
-    }
-
-    if (toastIcon) {
-        toastIcon.textContent =
-            icon;
-    }
-
-    toast.classList.add("show");
-
-    clearTimeout(toastTimer);
-
-    toastTimer =
-        setTimeout(() => {
-            toast.classList.remove(
-                "show"
-            );
-        }, 3000);
-}
-
-/* =========================================================
-   DASHBOARD
-========================================================= */
-
-function updateDashboard() {
-    const subjects =
-        getCurrentSubjects();
-
-    const progress =
-        calculateOverallProgress();
-
-    if ($("#dashboardSubjects")) {
-        $("#dashboardSubjects").textContent =
-            subjects.length;
-    }
-
-    if ($("#dashboardProgress")) {
-        $("#dashboardProgress").textContent =
-            progress;
-    }
-
-    if ($("#dashboardStreak")) {
-        $("#dashboardStreak").textContent =
-            Number(data.streak || 0);
-    }
-
-    if ($("#dashboardXP")) {
-        $("#dashboardXP").textContent =
-            Number(data.xp || 0);
-    }
-
-    if ($("#goalMinutes")) {
-        $("#goalMinutes").textContent =
-            Number(
-                data.studyMinutes || 0
-            );
-    }
-
-    if ($("#goalTarget")) {
-        $("#goalTarget").textContent =
-            Number(
-                data.dailyGoal || 60
-            );
-    }
-
-    const goal =
-        Math.max(
-            1,
-            Number(
-                data.dailyGoal || 60
-            )
-        );
-
-    const minutes =
-        Number(
-            data.studyMinutes || 0
-        );
-
-    const goalPercent =
-        Math.min(
-            100,
-            Math.round(
-                (minutes / goal) * 100
-            )
-        );
-
-    if ($("#goalPercentage")) {
-        $("#goalPercentage").textContent =
-            goalPercent;
-    }
-
-    updateGoalCircle(goalPercent);
-
-    renderDashboardSubjects();
-    renderRecentActivity();
-    renderUpcomingClasses();
-}
-
-function updateGoalCircle(percent) {
-    const circle =
-        $("#goalCircle");
-
-    if (!circle) {
-        return;
-    }
-
-    const radius = 50;
-
-    const circumference =
-        2 * Math.PI * radius;
-
-    circle.style.strokeDasharray =
-        circumference;
-
-    circle.style.strokeDashoffset =
-        circumference -
-        (percent / 100) *
-            circumference;
-}
-
-function renderDashboardSubjects() {
-    const container =
-        $("#dashboardSubjectList");
-
-    if (!container) {
-        return;
-    }
-
-    const subjects =
-        getCurrentSubjects();
-
-    if (!subjects.length) {
-        container.innerHTML =
-            `<div class="empty-state">
-                No subjects available.
-            </div>`;
-
-        return;
-    }
-
-    container.innerHTML =
-        subjects
-            .map(([name, icon]) => {
-                const progress =
-                    Number(
-                        data.subjects[name]
-                            ?.progress || 0
-                    );
-
-                return `
-                    <div class="subject-progress-item">
-                        <div class="subject-progress-top">
-                            <div class="subject-name">
-                                <span>${icon}</span>
-                                <strong>${escapeHTML(name)}</strong>
-                            </div>
-
-                            <strong>${progress}%</strong>
-                        </div>
-
-                        <div class="progress-track">
-                            <div
-                                class="progress-fill"
-                                style="width:${progress}%"
-                            ></div>
-                        </div>
-                    </div>
-                `;
-            })
-            .join("");
-}
-
-function renderRecentActivity() {
-    const container =
-        $("#recentActivity");
-
-    if (!container) {
-        return;
-    }
-
-    const currentClass =
-        getCurrentClass();
-
-    const activities =
-        data.activity
-            .filter(
-                item =>
-                    Number(
-                        item.classNumber
-                    ) === currentClass
-            )
-            .slice(0, 6);
-
-    if (!activities.length) {
-        container.innerHTML =
-            `<div class="empty-state">
-                <span>✨</span>
-                <p>Your learning activity will appear here.</p>
-            </div>`;
-
-        return;
-    }
-
-    container.innerHTML =
-        activities
-            .map(item => {
-                return `
-                    <div class="activity-item">
-                        <div class="activity-icon">
-                            ${escapeHTML(item.icon)}
-                        </div>
-
-                        <div class="activity-info">
-                            <strong>
-                                ${escapeHTML(item.text)}
-                            </strong>
-
-                            <span>
-                                ${formatDate(item.time)}
-                            </span>
-                        </div>
-                    </div>
-                `;
-            })
-            .join("");
-}
-
-function renderUpcomingClasses() {
-    const container =
-        $("#upcomingClasses");
-
-    if (!container) {
-        return;
-    }
-
-    const currentClass =
-        getCurrentClass();
-
-    const classes =
-        data.timetable
-            .filter(
-                item =>
-                    Number(
-                        item.classNumber
-                    ) === currentClass
-            )
-            .slice(0, 5);
-
-    if (!classes.length) {
-        container.innerHTML =
-            `<div class="empty-state">
-                <span>🗓️</span>
-                <p>No classes added yet.</p>
-            </div>`;
-
-        return;
-    }
-
-    container.innerHTML =
-        classes
-            .map(item => {
-                return `
-                    <div class="upcoming-item">
-                        <div class="upcoming-time">
-                            ${escapeHTML(
-                                formatTime(item.time)
-                            )}
-                        </div>
-
-                        <div class="upcoming-info">
-                            <strong>
-                                ${escapeHTML(item.title)}
-                            </strong>
-
-                            <span>
-                                ${escapeHTML(item.subject)}
-                            </span>
-                        </div>
-                    </div>
-                `;
-            })
-            .join("");
-}
-
-/* =========================================================
-   START STUDY
-========================================================= */
-
-function setupStudyButton() {
-    $("#startStudyButton")?.addEventListener(
-        "click",
-        () => {
-            if (studyTimer) {
-                stopStudySession();
-                return;
-            }
-
-            startStudySession();
-        }
-    );
-}
-
-function startStudySession() {
-    if (studyTimer) {
-        return;
-    }
-
-    studySeconds = 0;
-
-    const button =
-        $("#startStudyButton");
-
-    if (button) {
-        button.innerHTML =
-            `<span>⏹️</span> Stop Studying`;
-    }
-
-    showToast(
-        "Study session started!",
-        "🚀"
-    );
-
-    studyTimer =
-        setInterval(() => {
-            studySeconds++;
-
-            if (
-                studySeconds % 60 === 0
-            ) {
-                data.studyMinutes =
-                    Number(
-                        data.studyMinutes || 0
-                    ) + 1;
-
-                data.streak =
-                    Math.max(
-                        1,
-                        Number(
-                            data.streak || 0
-                        )
-                    );
-
-                addXP(
-                    2,
-                    "Study time"
-                );
-
-                saveData();
-                updateDashboard();
-            }
-        }, 1000);
-}
-
-function stopStudySession() {
-    if (!studyTimer) {
-        return;
-    }
-
-    clearInterval(studyTimer);
-
-    studyTimer = null;
-
-    const minutes =
-        Math.floor(
-            studySeconds / 60
-        );
-
-    if (minutes > 0) {
-        data.studyMinutes += minutes;
-
-        addXP(
-            minutes * 2,
-            "Study session completed"
-        );
-
-        addActivity(
-            `Studied for ${minutes} minute${minutes === 1 ? "" : "s"}`,
-            "📚"
-        );
-    }
-
-    studySeconds = 0;
-
-    const button =
-        $("#startStudyButton");
-
-    if (button) {
-        button.innerHTML =
-            `<span>🚀</span> Start Studying`;
-    }
-
-    saveData();
-    updateDashboard();
-
-    showToast(
-        "Study session saved!",
-        "📚"
-    );
-}
-
-/* =========================================================
-   SUBJECTS PAGE
-========================================================= */
-
-function renderSubjects() {
-    const container =
-        $("#subjectsGrid");
-
-    if (!container) {
-        return;
-    }
-
-    const subjects =
-        getCurrentSubjects();
-
-    container.innerHTML =
-        subjects
-            .map(([name, icon]) => {
-                const subject =
-                    data.subjects[name] ||
-                    {
-                        progress: 0,
-                        studiedMinutes: 0,
-                        quizzes: 0
-                    };
-
-                return `
-                    <div class="glass-card subject-card">
-
-                        <div class="subject-card-icon">
-                            ${icon}
-                        </div>
-
-                        <div class="subject-card-content">
-                            <span class="eyebrow">
-                                CLASS ${getCurrentClass()}
-                            </span>
-
-                            <h3>
-                                ${escapeHTML(name)}
-                            </h3>
-
-                            <div class="subject-progress-top">
-                                <span>Progress</span>
-                                <strong>
-                                    ${Number(subject.progress || 0)}%
-                                </strong>
-                            </div>
-
-                            <div class="progress-track">
-                                <div
-                                    class="progress-fill"
-                                    style="width:${Number(subject.progress || 0)}%"
-                                ></div>
-                            </div>
-
-                            <div class="subject-meta">
-                                <span>
-                                    📚 ${Number(subject.studiedMinutes || 0)} min
-                                </span>
-
-                                <span>
-                                    🧠 ${Number(subject.quizzes || 0)} quizzes
-                                </span>
-                            </div>
-
-                            <button
-                                class="secondary-btn subject-study-button"
-                                type="button"
-                                data-subject="${escapeHTML(name)}"
-                            >
-                                Study ${escapeHTML(name)}
-                            </button>
-                        </div>
-
-                    </div>
-                `;
-            })
-            .join("");
-
-    $$(".subject-study-button").forEach(
-        button => {
-            button.addEventListener(
-                "click",
-                () => {
-                    const subject =
-                        button.dataset.subject;
-
-                    openSubjectInMira(
-                        subject
-                    );
-                }
-            );
-        }
-    );
-}
-
-function openSubjectInMira(subject) {
-    navigateTo("ai-teacher");
-
-    const input =
-        $("#chatInput");
-
-    if (input) {
-        input.value =
-            `Help me study ${subject} for Class ${getCurrentClass()}.`;
-        input.focus();
-    }
-}
-
-/* =========================================================
-   SUBJECT SELECTS
-========================================================= */
-
-function populateSubjectSelects() {
-    const subjects =
-        getCurrentSubjects();
-
-    const selects = [
-        $("#aiPdfSubject"),
-        $("#homeworkSubject"),
-        $("#aiQuizSubject"),
-        $("#classSubject")
-    ];
-
-    selects.forEach(select => {
-        if (!select) {
-            return;
-        }
-
-        const current =
-            select.value;
-
-        select.innerHTML =
-            `<option value="">Select Subject</option>` +
-            subjects
-                .map(
-                    ([name]) =>
-                        `<option value="${escapeHTML(name)}">
-                            ${escapeHTML(name)}
-                        </option>`
-                )
-                .join("");
-
-        if (
-            current &&
-            subjects.some(
-                ([name]) =>
-                    name === current
-            )
-        ) {
-            select.value =
-                current;
-        }
-    });
-
-    updateHomeworkAIPreview();
-}
-
-/* =========================================================
-   PDF DATABASE
-========================================================= */
-
-let pdfDatabasePromise = null;
-
-function openPDFDatabase() {
-    if (pdfDatabasePromise) {
-        return pdfDatabasePromise;
-    }
-
-    pdfDatabasePromise =
-        new Promise(
-            (resolve, reject) => {
-                if (!("indexedDB" in window)) {
-                    reject(
-                        new Error(
-                            "IndexedDB is not supported."
-                        )
-                    );
-
-                    return;
-                }
-
-                const request =
-                    indexedDB.open(
-                        PDF_DB_NAME,
-                        PDF_DB_VERSION
-                    );
-
-                request.onupgradeneeded =
-                    event => {
-                        const db =
-                            event.target.result;
-
-                        if (
-                            !db.objectStoreNames.contains(
-                                PDF_STORE_NAME
-                            )
-                        ) {
-                            const store =
-                                db.createObjectStore(
-                                    PDF_STORE_NAME,
-                                    {
-                                        keyPath:
-                                            "id"
-                                    }
-                                );
-
-                            store.createIndex(
-                                "classNumber",
-                                "classNumber",
-                                {
-                                    unique: false
-                                }
-                            );
-
-                            store.createIndex(
-                                "addedAt",
-                                "addedAt",
-                                {
-                                    unique: false
-                                }
-                            );
-                        }
-                    };
-
-                request.onsuccess = () => {
-                    resolve(
-                        request.result
-                    );
-                };
-
-                request.onerror = () => {
-                    reject(
-                        request.error ||
-                            new Error(
-                                "Could not open PDF database."
-                            )
-                    );
-                };
-            }
-        );
-
-    return pdfDatabasePromise;
-}
-
-async function savePDFFile(
-    file,
-    metadata
-) {
-    const db =
-        await openPDFDatabase();
-
-    return new Promise(
-        (resolve, reject) => {
-            const transaction =
-                db.transaction(
-                    PDF_STORE_NAME,
-                    "readwrite"
-                );
-
-            const store =
-                transaction.objectStore(
-                    PDF_STORE_NAME
-                );
-
-            const request =
-                store.put({
-                    id: metadata.id,
-                    name: metadata.name,
-                    type:
-                        file.type ||
-                        "application/pdf",
-                    size: file.size,
-                    classNumber:
-                        metadata.classNumber,
-                    addedAt:
-                        metadata.addedAt,
-                    blob: file
-                });
-
-            request.onsuccess = () => {
-                resolve(
-                    metadata.id
-                );
-            };
-
-            request.onerror = () => {
-                reject(
-                    request.error ||
-                        new Error(
-                            "Could not save PDF."
-                        )
-                );
-            };
-        }
-    );
-}
-
-async function getPDFFile(pdfID) {
-    const db =
-        await openPDFDatabase();
-
-    return new Promise(
-        (resolve, reject) => {
-            const transaction =
-                db.transaction(
-                    PDF_STORE_NAME,
-                    "readonly"
-                );
-
-            const store =
-                transaction.objectStore(
-                    PDF_STORE_NAME
-                );
-
-            const request =
-                store.get(pdfID);
-
-            request.onsuccess = () => {
-                resolve(
-                    request.result ||
-                        null
-                );
-            };
-
-            request.onerror = () => {
-                reject(
-                    request.error ||
-                        new Error(
-                            "Could not open PDF."
-                        )
-                );
-            };
-        }
-    );
-}
-
-async function deletePDFFile(
-    pdfID
-) {
-    const db =
-        await openPDFDatabase();
-
-    return new Promise(
-        (resolve, reject) => {
-            const transaction =
-                db.transaction(
-                    PDF_STORE_NAME,
-                    "readwrite"
-                );
-
-            const store =
-                transaction.objectStore(
-                    PDF_STORE_NAME
-                );
-
-            const request =
-                store.delete(pdfID);
-
-            request.onsuccess = () => {
-                resolve(true);
-            };
-
-            request.onerror = () => {
-                reject(
-                    request.error ||
-                        new Error(
-                            "Could not delete PDF."
-                        )
-                );
-            };
-        }
-    );
-}
-
-/* =========================================================
-   PDF OPEN / DOWNLOAD
-========================================================= */
-
-async function openRealPDF(
-    pdfID
-) {
-    try {
-        const record =
-            await getPDFFile(pdfID);
-
-        if (!record?.blob) {
-            showToast(
-                "PDF file could not be found.",
-                "!"
-            );
-
-            return;
-        }
-
-        const pdfURL =
-            URL.createObjectURL(
-                record.blob
-            );
-
-        const newWindow =
-            window.open(
-                pdfURL,
-                "_blank"
-            );
-
-        if (!newWindow) {
-            URL.revokeObjectURL(
-                pdfURL
-            );
-
-            showToast(
-                "Please allow pop-ups to open the PDF.",
-                "!"
-            );
-
-            return;
-        }
-
-        setTimeout(() => {
-            URL.revokeObjectURL(
-                pdfURL
-            );
-        }, 60000);
-    } catch (error) {
-        console.error(
-            "PDF open error:",
-            error
-        );
-
-        showToast(
-            "Could not open this PDF.",
-            "!"
-        );
-    }
-}
-
-async function downloadRealPDF(
-    pdfID
-) {
-    try {
-        const record =
-            await getPDFFile(pdfID);
-
-        if (!record?.blob) {
-            showToast(
-                "PDF file could not be found.",
-                "!"
-            );
-
-            return;
-        }
-
-        const url =
-            URL.createObjectURL(
-                record.blob
-            );
-
-        const link =
-            document.createElement(
-                "a"
-            );
-
-        link.href = url;
-
-        link.download =
-            record.name ||
-            "Aventra-Study.pdf";
-
-        document.body.appendChild(
-            link
-        );
-
-        link.click();
-
-        link.remove();
-
-        setTimeout(() => {
-            URL.revokeObjectURL(
-                url
-            );
-        }, 1000);
-
-        showToast(
-            "PDF download started.",
-            "⬇️"
-        );
-    } catch (error) {
-        console.error(
-            "PDF download error:",
-            error
-        );
-
-        showToast(
-            "Could not download this PDF.",
-            "!"
-        );
-    }
-}
-
-/* =========================================================
-   PDF UPLOAD
-========================================================= */
-
-function setupPDFUpload() {
-    $("#pdfInput")?.addEventListener(
-        "change",
-        async event => {
-            const file =
-                event.target.files?.[0];
-
-            if (!file) {
-                return;
-            }
-
-            if (
-                file.type !==
-                    "application/pdf" &&
-                !file.name
-                    .toLowerCase()
-                    .endsWith(".pdf")
-            ) {
-                showToast(
-                    "Please select a PDF file.",
-                    "!"
-                );
-
-                event.target.value =
-                    "";
-
-                return;
-            }
-
-            try {
-                const id =
-                    createID();
-
-                const metadata = {
-                    id,
-                    name: file.name,
-                    classNumber:
-                        getCurrentClass(),
-                    addedAt:
-                        new Date().toISOString(),
-                    source: "upload"
-                };
-
-                await savePDFFile(
-                    file,
-                    metadata
-                );
-
-                data.pdfs.push(
-                    metadata
-                );
-
-                saveData();
-
-                addActivity(
-                    `Added PDF: ${file.name}`,
-                    "📄"
-                );
-
-                await renderPDFLists();
-
-                showToast(
-                    "PDF added to your library!",
-                    "📄"
-                );
-            } catch (error) {
-                console.error(
-                    "PDF upload error:",
-                    error
-                );
-
-                showToast(
-                    "Could not save this PDF.",
-                    "!"
-                );
-            }
-
-            event.target.value = "";
-        }
-    );
-}
-
-/* =========================================================
-   PDF LIST
-========================================================= */
-
-async function renderPDFLists() {
-    const allContainer =
-        $("#pdfList");
-
-    const generatedContainer =
-        $("#generatedPdfList");
-
-    const currentClass =
-        getCurrentClass();
-
-    const currentPDFs =
-        data.pdfs.filter(
-            pdf =>
-                Number(
-                    pdf.classNumber
-                ) === currentClass
-        );
-
-    const generated =
-        currentPDFs.filter(
-            pdf =>
-                pdf.source ===
-                "generated"
-        );
-
-    const uploaded =
-        currentPDFs.filter(
-            pdf =>
-                pdf.source !==
-                "generated"
-        );
-
-    if (allContainer) {
-        allContainer.innerHTML =
-            uploaded.length
-                ? createPDFCards(uploaded)
-                : `
-                    <div class="empty-state">
-                        <span>📄</span>
-                        <p>No personal PDFs added yet.</p>
-                    </div>
-                `;
-    }
-
-    if (generatedContainer) {
-        generatedContainer.innerHTML =
-            generated.length
-                ? createPDFCards(generated)
-                : `
-                    <div class="empty-state">
-                        <span>✨</span>
-                        <p>No AI-generated PDFs yet.</p>
-                    </div>
-                `;
-    }
-
-    bindPDFButtons();
-}
-
-function createPDFCards(pdfs) {
-    return pdfs
-        .map(pdf => {
-            return `
-                <div class="glass-card pdf-card">
-
-                    <div class="pdf-card-icon">
-                        📄
-                    </div>
-
-                    <div class="pdf-card-content">
-
-                        <span class="eyebrow">
-                            CLASS ${Number(pdf.classNumber)}
-                        </span>
-
-                        <h3>
-                            ${escapeHTML(pdf.name)}
-                        </h3>
-
-                        <p>
-                            ${formatBytes(pdf.size || 0)}
-                            •
-                            ${formatDate(pdf.addedAt)}
-                        </p>
-
-                        <div class="pdf-actions">
-
-                            <button
-                                class="primary-btn pdf-open-button"
-                                type="button"
-                                data-pdf-id="${escapeHTML(pdf.id)}"
-                            >
-                                Open
-                            </button>
-
-                            <button
-                                class="secondary-btn pdf-download-button"
-                                type="button"
-                                data-pdf-id="${escapeHTML(pdf.id)}"
-                            >
-                                Download
-                            </button>
-
-                            <button
-                                class="text-button pdf-delete-button"
-                                type="button"
-                                data-pdf-id="${escapeHTML(pdf.id)}"
-                            >
-                                Delete
-                            </button>
-
-                        </div>
-
-                    </div>
-
+                <div class="profile-avatar">
+                    S
                 </div>
-            `;
-        })
-        .join("");
-}
 
-function bindPDFButtons() {
-    $$(".pdf-open-button").forEach(
-        button => {
-            button.addEventListener(
-                "click",
-                () => {
-                    openRealPDF(
-                        button.dataset.pdfId
-                    );
-                }
-            );
-        }
-    );
+                <div class="profile-info">
 
-    $$(".pdf-download-button").forEach(
-        button => {
-            button.addEventListener(
-                "click",
-                () => {
-                    downloadRealPDF(
-                        button.dataset.pdfId
-                    );
-                }
-            );
-        }
-    );
+                    <strong id="sidebarStudentName">
+                        Student
+                    </strong>
 
-    $$(".pdf-delete-button").forEach(
-        button => {
-            button.addEventListener(
-                "click",
-                async () => {
-                    await removePDF(
-                        button.dataset.pdfId
-                    );
-                }
-            );
-        }
-    );
-}
-
-async function removePDF(pdfID) {
-    try {
-        await deletePDFFile(
-            pdfID
-        );
-
-        data.pdfs =
-            data.pdfs.filter(
-                pdf =>
-                    pdf.id !==
-                    pdfID
-            );
-
-        saveData();
-
-        await renderPDFLists();
-
-        addActivity(
-            "Removed a PDF from the library",
-            "🗑️"
-        );
-
-        showToast(
-            "PDF deleted.",
-            "🗑️"
-        );
-    } catch (error) {
-        console.error(
-            "PDF delete error:",
-            error
-        );
-
-        showToast(
-            "Could not delete PDF.",
-            "!"
-        );
-    }
-}
-
-/* =========================================================
-   SIMPLE PDF GENERATOR
-   Creates a real readable PDF blob
-========================================================= */
-
-function escapePDFText(text) {
-    return String(text || "")
-        .replace(/\\/g, "\\\\")
-        .replace(/\(/g, "\\(")
-        .replace(/\)/g, "\\)")
-        .replace(/\r?\n/g, " ");
-}
-
-function createSimplePDF(
-    title,
-    lines
-) {
-    const safeTitle =
-        escapePDFText(title);
-
-    const safeLines =
-        lines.map(escapePDFText);
-
-    let content =
-        "BT\n" +
-        "/F1 20 Tf\n" +
-        "50 750 Td\n" +
-        `(${safeTitle}) Tj\n` +
-        "/F1 11 Tf\n" +
-        "0 -30 Td\n";
-
-    safeLines.forEach(
-        line => {
-            content +=
-                `(${line}) Tj\n` +
-                "0 -18 Td\n";
-        }
-    );
-
-    content +=
-        "ET\n";
-
-    const objects = [];
-
-    objects.push(
-        "1 0 obj\n" +
-            "<< /Type /Catalog /Pages 2 0 R >>\n" +
-            "endobj\n"
-    );
-
-    objects.push(
-        "2 0 obj\n" +
-            "<< /Type /Pages /Kids [3 0 R] /Count 1 >>\n" +
-            "endobj\n"
-    );
-
-    objects.push(
-        "3 0 obj\n" +
-            "<< /Type /Page /Parent 2 0 R " +
-            "/MediaBox [0 0 612 792] " +
-            "/Resources << /Font << /F1 4 0 R >> >> " +
-            "/Contents 5 0 R >>\n" +
-            "endobj\n"
-    );
-
-    objects.push(
-        "4 0 obj\n" +
-            "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\n" +
-            "endobj\n"
-    );
-
-    objects.push(
-        `5 0 obj\n<< /Length ${content.length} >>\nstream\n` +
-            content +
-            "endstream\nendobj\n"
-    );
-
-    let pdf =
-        "%PDF-1.4\n";
-
-    const offsets = [0];
-
-    objects.forEach(
-        object => {
-            offsets.push(
-                pdf.length
-            );
-
-            pdf += object;
-        }
-    );
-
-    const xrefOffset =
-        pdf.length;
-
-    pdf +=
-        `xref\n0 ${objects.length + 1}\n`;
-
-    pdf +=
-        "0000000000 65535 f \n";
-
-    for (
-        let i = 1;
-        i < offsets.length;
-        i++
-    ) {
-        pdf +=
-            String(
-                offsets[i]
-            ).padStart(10, "0") +
-            " 00000 n \n";
-    }
-
-    pdf +=
-        `trailer\n<< /Size ${
-            objects.length + 1
-        } /Root 1 0 R >>\n`;
-
-    pdf +=
-        `startxref\n${xrefOffset}\n%%EOF`;
-
-    return new Blob(
-        [pdf],
-        {
-            type: "application/pdf"
-        }
-    );
-}
-
-/* =========================================================
-   AI PDF GENERATOR
-========================================================= */
-
-function setupGeneratePDF() {
-    $("#generatePdfButton")?.addEventListener(
-        "click",
-        generateAIPDF
-    );
-}
-
-async function generateAIPDF() {
-    const subject =
-        $("#aiPdfSubject")?.value;
-
-    const topic =
-        $("#aiPdfTopic")?.value.trim();
-
-    const status =
-        $("#generatedPdfStatus");
-
-    if (!subject) {
-        showToast(
-            "Please select a subject.",
-            "!"
-        );
-
-        return;
-    }
-
-    if (!topic) {
-        showToast(
-            "Please enter a topic.",
-            "!"
-        );
-
-        return;
-    }
-
-    if (status) {
-        status.textContent =
-            "Mira is creating your study PDF...";
-    }
-
-    const lines = [
-        `Class ${getCurrentClass()}`,
-        `Subject: ${subject}`,
-        `Topic: ${topic}`,
-        "",
-        "Study Notes",
-        "",
-        `1. ${topic} is an important topic in ${subject}.`,
-        "2. Read the main definitions and concepts carefully.",
-        "3. Make short notes using keywords.",
-        "4. Practice examples after learning the concept.",
-        "5. Revise the topic regularly.",
-        "",
-        "Quick Revision",
-        `• Remember the key ideas of ${topic}.`,
-        "• Try explaining the topic in your own words.",
-        "• Solve practice questions.",
-        "• Review mistakes before the next test."
-    ];
-
-    try {
-        const blob =
-            createSimplePDF(
-                `${subject} - ${topic}`,
-                lines
-            );
-
-        const id =
-            createID();
-
-        const metadata = {
-            id,
-            name:
-                `Mira-${subject}-${topic}.pdf`,
-            classNumber:
-                getCurrentClass(),
-            addedAt:
-                new Date().toISOString(),
-            source:
-                "generated",
-            size:
-                blob.size,
-            subject,
-            topic
-        };
-
-        await savePDFFile(
-            blob,
-            metadata
-        );
-
-        data.pdfs.push(
-            metadata
-        );
-
-        saveData();
-
-        await renderPDFLists();
-
-        addXP(
-            10,
-            "Created a study PDF"
-        );
-
-        if (status) {
-            status.textContent =
-                "Your real PDF is ready!";
-        }
-
-        showToast(
-            "Mira created your PDF!",
-            "✨"
-        );
-    } catch (error) {
-        console.error(
-            "AI PDF error:",
-            error
-        );
-
-        if (status) {
-            status.textContent =
-                "Could not create the PDF.";
-        }
-
-        showToast(
-            "PDF generation failed.",
-            "!"
-        );
-    }
-}
-
-/* =========================================================
-   HOMEWORK
-========================================================= */
-
-function setupHomework() {
-    $("#homeworkForm")?.addEventListener(
-        "submit",
-        event => {
-            event.preventDefault();
-
-            const title =
-                $("#homeworkTitle")?.value.trim();
-
-            const subject =
-                $("#homeworkSubject")?.value;
-
-            const dueDate =
-                $("#homeworkDate")?.value;
-
-            if (!title || !subject) {
-                showToast(
-                    "Please fill the homework details.",
-                    "!"
-                );
-
-                return;
-            }
-
-            const item = {
-                id: createID(),
-                title,
-                subject,
-                dueDate,
-                classNumber:
-                    getCurrentClass(),
-                completed: false,
-                createdAt:
-                    new Date().toISOString(),
-                source: "student"
-            };
-
-            data.homework.push(
-                item
-            );
-
-            saveData();
-
-            event.target.reset();
-
-            renderHomework();
-
-            addXP(
-                5,
-                "Added homework"
-            );
-
-            showToast(
-                "Homework added!",
-                "📝"
-            );
-        }
-    );
-
-    $("#generateHomeworkButton")?.addEventListener(
-        "click",
-        generateAIHomework
-    );
-
-    $("#homeworkSubject")?.addEventListener(
-        "change",
-        updateHomeworkAIPreview
-    );
-}
-
-function updateHomeworkAIPreview() {
-    if ($("#homeworkAIClass")) {
-        $("#homeworkAIClass").textContent =
-            `Class ${getCurrentClass()}`;
-    }
-
-    if ($("#homeworkAISubject")) {
-        $("#homeworkAISubject").textContent =
-            $("#homeworkSubject")?.value ||
-            "Select";
-    }
-}
-
-function generateAIHomework() {
-    const subject =
-        $("#homeworkSubject")?.value ||
-        getCurrentSubjects()[0]?.[0] ||
-        "Mathematics";
-
-    const classNumber =
-        getCurrentClass();
-
-    const item = {
-        id: createID(),
-        title:
-            `Mira Practice — ${subject}`,
-        subject,
-        dueDate: "",
-        classNumber,
-        completed: false,
-        createdAt:
-            new Date().toISOString(),
-        source: "mira",
-        questions: [
-            `Explain one important concept from ${subject}.`,
-            `Write three key points you learned in ${subject}.`,
-            `Solve one practice problem from your current topic.`,
-            `Write one question you still have about this subject.`
-        ]
-    };
-
-    data.homework.push(
-        item
-    );
-
-    saveData();
-
-    renderHomework();
-
-    addXP(
-        10,
-        "Mira generated homework"
-    );
-
-    showToast(
-        "Mira generated your homework!",
-        "✨"
-    );
-}
-
-function renderHomework() {
-    const container =
-        $("#homeworkList");
-
-    if (!container) {
-        return;
-    }
-
-    const currentClass =
-        getCurrentClass();
-
-    const tasks =
-        data.homework.filter(
-            item =>
-                Number(
-                    item.classNumber
-                ) === currentClass
-        );
-
-    if (!tasks.length) {
-        container.innerHTML =
-            `<div class="empty-state">
-                <span>📝</span>
-                <p>No homework yet.</p>
-            </div>`;
-
-        return;
-    }
-
-    container.innerHTML =
-        tasks
-            .map(item => {
-                return `
-                    <div class="glass-card homework-item ${
-                        item.completed
-                            ? "completed"
-                            : ""
-                    }">
-
-                        <div class="homework-item-main">
-
-                            <div class="homework-icon">
-                                ${
-                                    item.source ===
-                                    "mira"
-                                        ? "✨"
-                                        : "📝"
-                                }
-                            </div>
-
-                            <div>
-                                <span class="eyebrow">
-                                    ${escapeHTML(item.subject)}
-                                </span>
-
-                                <h3>
-                                    ${escapeHTML(item.title)}
-                                </h3>
-
-                                ${
-                                    item.dueDate
-                                        ? `<p>Due: ${formatDate(item.dueDate)}</p>`
-                                        : ""
-                                }
-
-                                ${
-                                    item.questions
-                                        ? `
-                                            <div class="homework-questions">
-                                                ${item.questions
-                                                    .map(
-                                                        q =>
-                                                            `<div>• ${escapeHTML(q)}</div>`
-                                                    )
-                                                    .join("")}
-                                            </div>
-                                        `
-                                        : ""
-                                }
-                            </div>
-
-                        </div>
-
-                        <div class="homework-actions">
-
-                            <button
-                                class="secondary-btn homework-complete-button"
-                                type="button"
-                                data-id="${escapeHTML(item.id)}"
-                            >
-                                ${
-                                    item.completed
-                                        ? "Completed ✓"
-                                        : "Mark Complete"
-                                }
-                            </button>
-
-                            <button
-                                class="text-button homework-delete-button"
-                                type="button"
-                                data-id="${escapeHTML(item.id)}"
-                            >
-                                Delete
-                            </button>
-
-                        </div>
-
-                    </div>
-                `;
-            })
-            .join("");
-
-    $$(".homework-complete-button").forEach(
-        button => {
-            button.addEventListener(
-                "click",
-                () => {
-                    completeHomework(
-                        button.dataset.id
-                    );
-                }
-            );
-        }
-    );
-
-    $$(".homework-delete-button").forEach(
-        button => {
-            button.addEventListener(
-                "click",
-                () => {
-                    deleteHomework(
-                        button.dataset.id
-                    );
-                }
-            );
-        }
-    );
-}
-
-function completeHomework(id) {
-    const item =
-        data.homework.find(
-            task =>
-                task.id === id
-        );
-
-    if (!item) {
-        return;
-    }
-
-    if (!item.completed) {
-        item.completed = true;
-
-        addXP(
-            15,
-            "Completed homework"
-        );
-
-        addActivity(
-            `Completed homework: ${item.title}`,
-            "✅"
-        );
-
-        showToast(
-            "Homework completed!",
-            "✅"
-        );
-    }
-
-    saveData();
-    renderHomework();
-}
-
-function deleteHomework(id) {
-    data.homework =
-        data.homework.filter(
-            item =>
-                item.id !== id
-        );
-
-    saveData();
-    renderHomework();
-
-    showToast(
-        "Homework deleted.",
-        "🗑️"
-    );
-}
-
-/* =========================================================
-   QUIZZES
-========================================================= */
-
-function getQuizList() {
-    const classNumber =
-        getCurrentClass();
-
-    const base =
-        QUIZZES[classNumber] ||
-        QUIZZES[6];
-
-    return [...base];
-}
-
-function renderQuizLibrary() {
-    const container =
-        $("#quizGrid");
-
-    if (!container) {
-        return;
-    }
-
-    const quizzes =
-        getQuizList();
-
-    container.innerHTML =
-        quizzes
-            .map(
-                quiz => {
-                    const result =
-                        data.quizResults[
-                            quiz.id
-                        ];
-
-                    return `
-                        <div class="glass-card quiz-card">
-
-                            <div class="quiz-icon">
-                                ${quiz.icon}
-                            </div>
-
-                            <span class="eyebrow">
-                                ${escapeHTML(quiz.subject)}
-                            </span>
-
-                            <h3>
-                                ${escapeHTML(quiz.title)}
-                            </h3>
-
-                            <p>
-                                ${quiz.questions.length}
-                                questions
-                            </p>
-
-                            ${
-                                result
-                                    ? `
-                                        <div class="quiz-best">
-                                            Best: ${result.score}/${result.total}
-                                        </div>
-                                    `
-                                    : ""
-                            }
-
-                            <button
-                                class="primary-btn start-quiz-button"
-                                type="button"
-                                data-quiz-id="${escapeHTML(quiz.id)}"
-                            >
-                                Start Quiz
-                            </button>
-
-                        </div>
-                    `;
-                }
-            )
-            .join("");
-
-    $$(".start-quiz-button").forEach(
-        button => {
-            button.addEventListener(
-                "click",
-                () => {
-                    startQuiz(
-                        button.dataset.quizId
-                    );
-                }
-            );
-        }
-    );
-
-    bindAIQuizGenerator();
-}
-
-function startQuiz(quizID) {
-    const quiz =
-        getQuizList().find(
-            item =>
-                item.id === quizID
-        );
-
-    if (!quiz) {
-        return;
-    }
-
-    currentQuiz = quiz;
-    currentQuestion = 0;
-    currentQuizScore = 0;
-
-    renderQuizQuestion();
-
-    $("#quizPlayer")?.classList.remove(
-        "hidden"
-    );
-
-    $("#quizPlayer")?.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-    });
-}
-
-function renderQuizQuestion() {
-    const player =
-        $("#quizPlayer");
-
-    if (!player || !currentQuiz) {
-        return;
-    }
-
-    const question =
-        currentQuiz.questions[
-            currentQuestion
-        ];
-
-    const total =
-        currentQuiz.questions.length;
-
-    player.innerHTML =
-        `
-        <div class="glass-card quiz-player-card">
-
-            <div class="quiz-player-header">
-
-                <div>
-                    <span class="eyebrow">
-                        ${escapeHTML(currentQuiz.subject)}
+                    <span id="sidebarStudentClass">
+                        Class 6
                     </span>
 
-                    <h2>
-                        ${escapeHTML(currentQuiz.title)}
-                    </h2>
                 </div>
 
-                <strong>
-                    ${currentQuestion + 1}/${total}
-                </strong>
+            </div>
+
+
+            <!-- NAVIGATION -->
+
+            <nav class="main-navigation">
+
+                <div class="nav-section-title">
+                    MAIN MENU
+                </div>
+
+
+                <button
+                    class="nav-item active"
+                    data-page="dashboard"
+                    type="button"
+                >
+
+                    <span class="nav-icon">
+                        🏠
+                    </span>
+
+                    <span class="nav-label">
+                        Dashboard
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="nav-item"
+                    data-page="ai-teacher"
+                    type="button"
+                >
+
+                    <span class="nav-icon">
+                        🤖
+                    </span>
+
+                    <span class="nav-label">
+                        AI Teacher
+                    </span>
+
+                    <span class="nav-badge">
+                        AI
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="nav-item"
+                    data-page="subjects"
+                    type="button"
+                >
+
+                    <span class="nav-icon">
+                        📚
+                    </span>
+
+                    <span class="nav-label">
+                        My Subjects
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="nav-item"
+                    data-page="pdf-library"
+                    type="button"
+                >
+
+                    <span class="nav-icon">
+                        📄
+                    </span>
+
+                    <span class="nav-label">
+                        PDF Library
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="nav-item"
+                    data-page="homework"
+                    type="button"
+                >
+
+                    <span class="nav-icon">
+                        📝
+                    </span>
+
+                    <span class="nav-label">
+                        Homework
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="nav-item"
+                    data-page="quizzes"
+                    type="button"
+                >
+
+                    <span class="nav-icon">
+                        🧠
+                    </span>
+
+                    <span class="nav-label">
+                        Tests & Quizzes
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="nav-item"
+                    data-page="progress"
+                    type="button"
+                >
+
+                    <span class="nav-icon">
+                        📊
+                    </span>
+
+                    <span class="nav-label">
+                        My Progress
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="nav-item"
+                    data-page="achievements"
+                    type="button"
+                >
+
+                    <span class="nav-icon">
+                        🏆
+                    </span>
+
+                    <span class="nav-label">
+                        Achievements
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="nav-item"
+                    data-page="timetable"
+                    type="button"
+                >
+
+                    <span class="nav-icon">
+                        🗓️
+                    </span>
+
+                    <span class="nav-label">
+                        Timetable
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="nav-item live-nav-item"
+                    data-page="live-class"
+                    type="button"
+                >
+
+                    <span class="nav-icon">
+                        🎥
+                    </span>
+
+                    <span class="nav-label">
+                        Live Class
+                    </span>
+
+                    <span class="coming-badge">
+                        Soon
+                    </span>
+
+                </button>
+
+
+    
+
+                </button>
+
+
+                <div class="nav-section-title account-title">
+                    ACCOUNT
+                </div>
+
+
+                <button
+                    class="nav-item"
+                    data-page="settings"
+                    type="button"
+                >
+
+                    <span class="nav-icon">
+                        ⚙️
+                    </span>
+
+                    <span class="nav-label">
+                        Settings
+                    </span>
+
+                </button>
+
+            </nav>
+
+        </div>
+
+
+        <!-- SIDEBAR BOTTOM -->
+
+        <div class="sidebar-bottom">
+
+            <div class="sidebar-mini-card">
+
+                <div class="mini-card-icon">
+                    ✨
+                </div>
+
+                <div>
+
+                    <strong>
+                        Learn smarter
+                    </strong>
+
+                    <span>
+                        Powered by Mira AI
+                    </span>
+
+                </div>
 
             </div>
 
-            <div class="quiz-question">
-
-                <span class="quiz-question-number">
-                    Question ${currentQuestion + 1}
-                </span>
-
-                <h3>
-                    ${escapeHTML(question.q)}
-                </h3>
-
-            </div>
-
-            <div class="quiz-options">
-
-                ${question.options
-                    .map(
-                        (option, index) =>
-                            `
-                            <button
-                                class="quiz-option"
-                                type="button"
-                                data-option="${index}"
-                            >
-                                <span>
-                                    ${String.fromCharCode(
-                                        65 + index
-                                    )}
-                                </span>
-
-                                ${escapeHTML(option)}
-                            </button>
-                            `
-                    )
-                    .join("")}
-
+            <div class="sidebar-version">
+                Aventra • v2.0
             </div>
 
         </div>
-        `;
 
-    $$(".quiz-option").forEach(
-        button => {
-            button.addEventListener(
-                "click",
-                () => {
-                    answerQuiz(
-                        Number(
-                            button.dataset.option
-                        )
-                    );
-                }
-            );
-        }
-    );
-}
+    </aside>
 
-function answerQuiz(answer) {
-    if (!currentQuiz) {
-        return;
-    }
 
-    const question =
-        currentQuiz.questions[
-            currentQuestion
-        ];
+    <!-- =====================================================
+         MAIN AREA
+    ====================================================== -->
 
-    if (
-        answer === question.answer
-    ) {
-        currentQuizScore++;
-        showToast(
-            "Correct answer!",
-            "✅"
-        );
-    } else {
-        showToast(
-            `Correct answer: ${question.options[question.answer]}`,
-            "💡"
-        );
-    }
+    <main class="main-area">
 
-    setTimeout(
-        () => {
-            currentQuestion++;
 
-            if (
-                currentQuestion >=
-                currentQuiz.questions.length
-            ) {
-                finishQuiz();
-            } else {
-                renderQuizQuestion();
-            }
-        },
-        600
-    );
-}
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
 
-function finishQuiz() {
-    if (!currentQuiz) {
-        return;
-    }
+        <header class="topbar">
 
-    const total =
-        currentQuiz.questions.length;
-
-    const previous =
-        data.quizResults[
-            currentQuiz.id
-        ];
-
-    const best =
-        Math.max(
-            Number(
-                previous?.score || 0
-            ),
-            currentQuizScore
-        );
-
-    data.quizResults[
-        currentQuiz.id
-    ] = {
-        score: best,
-        latestScore:
-            currentQuizScore,
-        total,
-        classNumber:
-            getCurrentClass(),
-        completedAt:
-            new Date().toISOString()
-    };
-
-    const subject =
-        currentQuiz.subject;
-
-    if (
-        data.subjects[subject]
-    ) {
-        data.subjects[
-            subject
-        ].quizzes =
-            Number(
-                data.subjects[
-                    subject
-                ].quizzes || 0
-            ) + 1;
-
-        if (
-            currentQuizScore >=
-            Math.ceil(total / 2)
-        ) {
-            data.subjects[
-                subject
-            ].progress =
-                Math.min(
-                    100,
-                    Number(
-                        data.subjects[
-                            subject
-                        ].progress || 0
-                    ) + 5
-                );
-        }
-    }
-
-    saveData();
-
-    addXP(
-        currentQuizScore * 10 + 10,
-        "Completed a quiz"
-    );
-
-    addActivity(
-        `${currentQuiz.title}: ${currentQuizScore}/${total}`,
-        "🧠"
-    );
-
-    const player =
-        $("#quizPlayer");
-
-    if (player) {
-        player.innerHTML =
-            `
-            <div class="glass-card quiz-result-card">
-
-                <div class="quiz-result-icon">
-                    ${
-                        currentQuizScore >=
-                        Math.ceil(total / 2)
-                            ? "🎉"
-                            : "📚"
-                    }
-                </div>
-
-                <span class="eyebrow">
-                    QUIZ COMPLETE
-                </span>
-
-                <h2>
-                    ${escapeHTML(currentQuiz.title)}
-                </h2>
-
-                <div class="quiz-result-score">
-                    ${currentQuizScore}
-                    /
-                    ${total}
-                </div>
-
-                <p>
-                    ${
-                        currentQuizScore ===
-                        total
-                            ? "Perfect score! Amazing work."
-                            : currentQuizScore >=
-                              Math.ceil(total / 2)
-                            ? "Great job! Keep practicing."
-                            : "Good try! Review the topic and try again."
-                    }
-                </p>
+            <div class="topbar-left">
 
                 <button
-                    id="closeQuizButton"
-                    class="primary-btn"
+                    id="menuButton"
+                    class="icon-button mobile-menu-button"
+                    type="button"
+                    aria-label="Open menu"
+                >
+                    ☰
+                </button>
+
+
+                <div class="page-heading">
+
+                    <span
+                        id="pageEyebrow"
+                        class="page-eyebrow"
+                    >
+                        WELCOME BACK
+                    </span>
+
+                    <h1 id="pageTitle">
+                        Dashboard
+                    </h1>
+
+                </div>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <!-- SEARCH -->
+
+                <div class="global-search">
+
+                    <span>
+                        🔎
+                    </span>
+
+                    <input
+                        id="globalSearch"
+                        type="search"
+                        placeholder="Search..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <!-- NOTIFICATION -->
+
+                <button
+                    id="notificationButton"
+                    class="icon-button notification-button"
+                    type="button"
+                    aria-label="Notifications"
+                >
+
+                    🔔
+
+                    <span
+                        id="notificationDot"
+                        class="notification-dot"
+                    ></span>
+
+                </button>
+
+
+                <!-- TOP PROFILE -->
+
+                <button
+                    id="topProfileButton"
+                    class="top-profile"
                     type="button"
                 >
-                    Back to Quiz Library
+
+                    <div class="top-avatar">
+                        S
+                    </div>
+
+                    <div class="top-profile-info">
+
+                        <strong id="topStudentName">
+                            Student
+                        </strong>
+
+                        <span id="topStudentClass">
+                            Class 6
+                        </span>
+
+                    </div>
+
+                    <span class="profile-arrow">
+                        ▾
+                    </span>
+
                 </button>
 
             </div>
-            `;
 
-        $("#closeQuizButton")?.addEventListener(
-            "click",
-            () => {
-                player.classList.add(
-                    "hidden"
-                );
+        </header>
 
-                renderQuizLibrary();
-            }
-        );
-    }
 
-    currentQuiz = null;
+        <!-- =================================================
+             CONTENT
+        ================================================== -->
 
-    renderAll();
+        <div class="page-container">
 
-    showToast(
-        `Quiz finished: ${currentQuizScore}/${total}`,
-        "🏆"
-    );
-}
 
-/* =========================================================
-   AI QUIZ
-========================================================= */
+            <!-- =================================================
+                 DASHBOARD
+            ================================================== -->
 
-function bindAIQuizGenerator() {
-    const button =
-        $("#generateQuizButton");
+            <section
+                id="page-dashboard"
+                class="page active-page"
+            >
 
-    if (!button) {
-        return;
-    }
+                <!-- HERO -->
 
-    if (
-        button.dataset.ready ===
-        "true"
-    ) {
-        return;
-    }
+                <div class="dashboard-hero">
 
-    button.dataset.ready =
-        "true";
+                    <div class="hero-content">
 
-    button.addEventListener(
-        "click",
-        generateAIQuiz
-    );
-}
+                        <span class="eyebrow">
+                            YOUR LEARNING SPACE
+                        </span>
 
-function generateAIQuiz() {
-    const subject =
-        $("#aiQuizSubject")?.value ||
-        getCurrentSubjects()[0]?.[0] ||
-        "Mathematics";
+                        <h2>
+                            Learn.
+                            <span>Grow.</span>
+                            Achieve.
+                        </h2>
 
-    const topic =
-        $("#aiQuizTopic")?.value.trim() ||
-        "General Revision";
+                        <p>
+                            Welcome back,
+                            <strong id="dashboardStudentName">
+                                Student
+                            </strong>.
+                            Mira is ready to help you learn
+                            smarter today.
+                        </p>
 
-    const quiz = {
-        id:
-            "ai-" +
-            createID(),
+                        <div class="hero-actions">
 
-        title:
-            `Mira Quiz — ${topic}`,
+                            <button
+                                id="startStudyButton"
+                                class="primary-btn"
+                                type="button"
+                            >
+                                <span>🚀</span>
+                                Start Studying
+                            </button>
 
-        subject,
+                            <button
+                                class="secondary-btn"
+                                type="button"
+                                data-page-link="ai-teacher"
+                            >
+                                <span>✨</span>
+                                Ask Mira
+                            </button>
 
-        icon: "✨",
-
-        questions: [
-            {
-                q:
-                    `What is the most important thing to do while learning ${topic}?`,
-                options: [
-                    "Understand the concept",
-                    "Skip the lesson",
-                    "Avoid practice",
-                    "Only memorize the title"
-                ],
-                answer: 0
-            },
-
-            {
-                q:
-                    `Which activity helps you revise ${topic}?`,
-                options: [
-                    "Practice questions",
-                    "Ignoring mistakes",
-                    "Skipping notes",
-                    "Not reviewing"
-                ],
-                answer: 0
-            },
-
-            {
-                q:
-                    `What should you do when you do not understand ${topic}?`,
-                options: [
-                    "Ask for help",
-                    "Stop learning",
-                    "Guess everything",
-                    "Ignore it"
-                ],
-                answer: 0
-            }
-        ],
-
-        aiGenerated: true
-    };
-
-    data.aiQuizResults.push({
-        ...quiz,
-        createdAt:
-            new Date().toISOString(),
-        classNumber:
-            getCurrentClass()
-    });
-
-    saveData();
-
-    currentQuiz = quiz;
-    currentQuestion = 0;
-    currentQuizScore = 0;
-
-    renderQuizQuestion();
-
-    $("#quizPlayer")?.classList.remove(
-        "hidden"
-    );
-
-    $("#quizPlayer")?.scrollIntoView({
-        behavior: "smooth"
-    });
-
-    addXP(
-        10,
-        "Mira generated a quiz"
-    );
-
-    showToast(
-        "Mira created your quiz!",
-        "✨"
-    );
-}
-
-/* =========================================================
-   CHAT / MIRA
-========================================================= */
-
-function setupMira() {
-    const form =
-        $("#chatForm");
-
-    if (!form) {
-        return;
-    }
-
-    if (
-        form.dataset.ready ===
-        "true"
-    ) {
-        return;
-    }
-
-    form.dataset.ready =
-        "true";
-
-    form.addEventListener(
-        "submit",
-        async event => {
-            event.preventDefault();
-
-            const input =
-                $("#chatInput");
-
-            const message =
-                input?.value.trim();
-
-            if (!message) {
-                return;
-            }
-
-            input.value = "";
-
-            addChatMessage(
-                "user",
-                message
-            );
-
-            data.chat.push({
-                role: "user",
-                message,
-                time:
-                    new Date().toISOString(),
-                classNumber:
-                    getCurrentClass()
-            });
-
-            saveData();
-
-            const typing =
-                addTypingMessage();
-
-            let response;
-
-            try {
-                response =
-                    await askMiraAPI(
-                        message
-                    );
-            } catch (error) {
-                console.warn(
-                    "Mira API unavailable:",
-                    error
-                );
-
-                response =
-                    generateLocalMiraAnswer(
-                        message
-                    );
-            }
-
-            typing.remove();
-
-            addChatMessage(
-                "mira",
-                response
-            );
-
-            data.chat.push({
-                role: "mira",
-                message: response,
-                time:
-                    new Date().toISOString(),
-                classNumber:
-                    getCurrentClass()
-            });
-
-            saveData();
-        }
-    );
-
-    $$("[data-ai-prompt]").forEach(
-        button => {
-            if (
-                button.dataset.miraReady ===
-                "true"
-            ) {
-                return;
-            }
-
-            button.dataset.miraReady =
-                "true";
-
-            button.addEventListener(
-                "click",
-                () => {
-                    const prompt =
-                        button.dataset.aiPrompt;
-
-                    navigateTo(
-                        "ai-teacher"
-                    );
-
-                    const input =
-                        $("#chatInput");
-
-                    if (input) {
-                        input.value =
-                            prompt;
-
-                        input.focus();
-
-                        $("#chatForm")?.requestSubmit();
-                    }
-                }
-            );
-        }
-    );
-
-    restoreChat();
-}
-
-async function askMiraAPI(message) {
-    const controller =
-        new AbortController();
-
-    const timeout =
-        setTimeout(
-            () =>
-                controller.abort(),
-            7000
-        );
-
-    try {
-        const response =
-            await fetch(
-                `${API_URL}/api/ai/chat`,
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        message,
-                        class:
-                            getCurrentClass(),
-                        subjects:
-                            getCurrentSubjects().map(
-                                ([name]) =>
-                                    name
-                            )
-                    }),
-
-                    signal:
-                        controller.signal
-                }
-            );
-
-        if (!response.ok) {
-            throw new Error(
-                `Mira API error ${response.status}`
-            );
-        }
-
-        const result =
-            await response.json();
-
-        return (
-            result.answer ||
-            result.message ||
-            result.response ||
-            generateLocalMiraAnswer(
-                message
-            )
-        );
-    } finally {
-        clearTimeout(timeout);
-    }
-}
-
-function generateLocalMiraAnswer(
-    message
-) {
-    const text =
-        String(message)
-            .toLowerCase();
-
-    const classNumber =
-        getCurrentClass();
-
-    const subjects =
-        getCurrentSubjects()
-            .map(([name]) => name)
-            .join(", ");
-
-    if (
-        text.includes("hello") ||
-        text.includes("hi") ||
-        text.includes("hey")
-    ) {
-        return `Hi! 👋 I'm Mira. You're studying in Class ${classNumber}. Tell me which topic you want to learn.`;
-    }
-
-    if (
-        text.includes("study tip") ||
-        text.includes("tips")
-    ) {
-        return `Here are 5 smart study tips for Class ${classNumber}:\n\n1. Study in short focused sessions.\n2. Revise what you learned the same day.\n3. Practice questions instead of only reading.\n4. Keep difficult topics in a revision list.\n5. Take short breaks between study sessions.`;
-    }
-
-    if (
-        text.includes("revision")
-    ) {
-        return `Quick revision plan:\n\n• 20 minutes: revise your notes.\n• 20 minutes: solve practice questions.\n• 10 minutes: review mistakes.\n• 10 minutes: recall the main points without looking at your notes.\n\nYour Class ${classNumber} subjects include ${subjects}.`;
-    }
-
-    if (
-        text.includes("math") ||
-        text.includes("fraction") ||
-        text.includes("algebra")
-    ) {
-        return `Let's learn step by step 📐. First identify exactly what the question is asking. Then write the known values, choose the correct operation or formula, solve carefully, and finally check your answer. If you send me the exact Maths question, I can explain the steps.`;
-    }
-
-    if (
-        text.includes("science") ||
-        text.includes("plant") ||
-        text.includes("light") ||
-        text.includes("force")
-    ) {
-        return `Let's make Science simple 🔬. Start with the definition, understand the process, then learn one real-life example. After that, test yourself without looking at the notes. Send me the exact Science topic and I'll explain it step by step.`;
-    }
-
-    if (
-        text.includes("english") ||
-        text.includes("grammar")
-    ) {
-        return `For English 📖, first identify the grammar rule, then look at an example and create two of your own sentences. If you give me the sentence or grammar topic, I'll explain the rule simply.`;
-    }
-
-    if (
-        text.includes("homework")
-    ) {
-        return `I can help with homework 📝. Send me the question, and I'll guide you through it step by step rather than simply giving you an unexplained answer.`;
-    }
-
-    if (
-        text.includes("quiz") ||
-        text.includes("question")
-    ) {
-        return `Sure! 🧠 I can help you practice. Go to Tests & Quizzes and choose one of the available quizzes, or tell me the subject and topic and I can create practice questions.`;
-    }
-
-    return `I'm Mira, your Class ${classNumber} learning assistant ✨. I can help with ${subjects}. Tell me the subject and topic, or paste your exact question, and I'll explain it step by step.`;
-}
-
-function addChatMessage(
-    role,
-    message
-) {
-    const container =
-        $("#chatMessages");
-
-    if (!container) {
-        return null;
-    }
-
-    const wrapper =
-        document.createElement(
-            "div"
-        );
-
-    wrapper.className =
-        `chat-message ${
-            role === "user"
-                ? "user-message"
-                : "mira-message"
-        }`;
-
-    const avatar =
-        role === "user"
-            ? "👤"
-            : "✨";
-
-    wrapper.innerHTML =
-        `
-        <div class="message-avatar">
-            ${avatar}
-        </div>
-
-        <div class="message-bubble">
-
-            <strong>
-                ${
-                    role === "user"
-                        ? "You"
-                        : "Mira"
-                }
-            </strong>
-
-            <p>
-                ${escapeHTML(message)}
-            </p>
-
-        </div>
-        `;
-
-    container.appendChild(
-        wrapper
-    );
-
-    container.scrollTop =
-        container.scrollHeight;
-
-    return wrapper;
-}
-
-function addTypingMessage() {
-    const container =
-        $("#chatMessages");
-
-    const wrapper =
-        document.createElement(
-            "div"
-        );
-
-    wrapper.className =
-        "chat-message mira-message";
-
-    wrapper.innerHTML =
-        `
-        <div class="message-avatar">
-            ✨
-        </div>
-
-        <div class="message-bubble">
-            <strong>Mira</strong>
-            <p>Thinking...</p>
-        </div>
-        `;
-
-    container?.appendChild(
-        wrapper
-    );
-
-    if (container) {
-        container.scrollTop =
-            container.scrollHeight;
-    }
-
-    return wrapper;
-}
-
-function restoreChat() {
-    const container =
-        $("#chatMessages");
-
-    if (!container) {
-        return;
-    }
-
-    const saved =
-        data.chat.filter(
-            item =>
-                Number(
-                    item.classNumber
-                ) === getCurrentClass()
-        );
-
-    if (!saved.length) {
-        return;
-    }
-
-    const initial =
-        container.querySelector(
-            ".chat-message"
-        );
-
-    if (initial) {
-        initial.remove();
-    }
-
-    saved.slice(-20).forEach(
-        item => {
-            addChatMessage(
-                item.role === "user"
-                    ? "user"
-                    : "mira",
-                item.message
-            );
-        }
-    );
-}
-
-/* =========================================================
-   PROGRESS PAGE
-========================================================= */
-
-function renderProgress() {
-    const container =
-        $("#progressContent");
-
-    if (!container) {
-        return;
-    }
-
-    const subjects =
-        getCurrentSubjects();
-
-    const overall =
-        calculateOverallProgress();
-
-    const totalMinutes =
-        subjects.reduce(
-            (sum, [name]) =>
-                sum +
-                Number(
-                    data.subjects[name]
-                        ?.studiedMinutes ||
-                        0
-                ),
-            0
-        );
-
-    const totalQuizzes =
-        subjects.reduce(
-            (sum, [name]) =>
-                sum +
-                Number(
-                    data.subjects[name]
-                        ?.quizzes ||
-                        0
-                ),
-            0
-        );
-
-    container.innerHTML =
-        `
-        <div class="progress-overview-grid">
-
-            <div class="glass-card">
-                <span class="eyebrow">
-                    OVERALL
-                </span>
-
-                <strong class="progress-big-number">
-                    ${overall}%
-                </strong>
-
-                <p>
-                    Class ${getCurrentClass()} overall progress
-                </p>
-            </div>
-
-            <div class="glass-card">
-                <span class="eyebrow">
-                    STUDY TIME
-                </span>
-
-                <strong class="progress-big-number">
-                    ${totalMinutes}
-                </strong>
-
-                <p>
-                    Subject study minutes
-                </p>
-            </div>
-
-            <div class="glass-card">
-                <span class="eyebrow">
-                    QUIZZES
-                </span>
-
-                <strong class="progress-big-number">
-                    ${totalQuizzes}
-                </strong>
-
-                <p>
-                    Quizzes completed
-                </p>
-            </div>
-
-            <div class="glass-card">
-                <span class="eyebrow">
-                    XP
-                </span>
-
-                <strong class="progress-big-number">
-                    ${Number(data.xp || 0)}
-                </strong>
-
-                <p>
-                    Aventra XP
-                </p>
-            </div>
-
-        </div>
-
-        <div class="glass-card progress-subject-card">
-
-            <div class="card-heading">
-
-                <div>
-                    <span class="eyebrow">
-                        CLASS ${getCurrentClass()}
-                    </span>
-
-                    <h3>
-                        Subject Performance
-                    </h3>
-                </div>
-
-            </div>
-
-            <div class="progress-subject-list">
-
-                ${subjects
-                    .map(
-                        ([name, icon]) => {
-                            const value =
-                                Number(
-                                    data.subjects[name]
-                                        ?.progress ||
-                                        0
-                                );
-
-                            return `
-                                <div class="progress-row">
-
-                                    <div class="progress-row-title">
-                                        <span>
-                                            ${icon}
-                                        </span>
-
-                                        <strong>
-                                            ${escapeHTML(name)}
-                                        </strong>
-
-                                        <span>
-                                            ${value}%
-                                        </span>
-                                    </div>
-
-                                    <div class="progress-track">
-                                        <div
-                                            class="progress-fill"
-                                            style="width:${value}%"
-                                        ></div>
-                                    </div>
-
-                                </div>
-                            `;
-                        }
-                    )
-                    .join("")}
-
-            </div>
-
-        </div>
-        `;
-}
-
-/* =========================================================
-   ACHIEVEMENTS
-========================================================= */
-
-const ACHIEVEMENT_DEFINITIONS = [
-    {
-        id: "first-study",
-        title: "First Step",
-        description: "Complete your first study activity.",
-        icon: "🚀"
-    },
-
-    {
-        id: "xp-100",
-        title: "XP Star",
-        description: "Earn 100 XP.",
-        icon: "⭐"
-    },
-
-    {
-        id: "xp-500",
-        title: "XP Master",
-        description: "Earn 500 XP.",
-        icon: "🌟"
-    },
-
-    {
-        id: "quiz-first",
-        title: "Quiz Starter",
-        description: "Complete your first quiz.",
-        icon: "🧠"
-    },
-
-    {
-        id: "homework-first",
-        title: "Homework Hero",
-        description: "Complete your first homework task.",
-        icon: "📝"
-    },
-
-    {
-        id: "pdf-first",
-        title: "PDF Collector",
-        description: "Add your first PDF.",
-        icon: "📄"
-    },
-
-    {
-        id: "progress-50",
-        title: "Halfway There",
-        description: "Reach 50% overall progress.",
-        icon: "🏆"
-    }
-];
-
-function calculateAchievements() {
-    const unlocked = {};
-
-    const hasStudy =
-        data.activity.length > 0 ||
-        Number(data.studyMinutes || 0) > 0;
-
-    if (hasStudy) {
-        unlocked["first-study"] = true;
-    }
-
-    if (
-        Number(data.xp || 0) >= 100
-    ) {
-        unlocked["xp-100"] = true;
-    }
-
-    if (
-        Number(data.xp || 0) >= 500
-    ) {
-        unlocked["xp-500"] = true;
-    }
-
-    if (
-        Object.keys(
-            data.quizResults || {}
-        ).length > 0
-    ) {
-        unlocked["quiz-first"] = true;
-    }
-
-    if (
-        data.homework.some(
-            item => item.completed
-        )
-    ) {
-        unlocked["homework-first"] =
-            true;
-    }
-
-    if (
-        data.pdfs.length > 0
-    ) {
-        unlocked["pdf-first"] =
-            true;
-    }
-
-    if (
-        calculateOverallProgress() >= 50
-    ) {
-        unlocked["progress-50"] =
-            true;
-    }
-
-    return unlocked;
-}
-
-function updateAchievements() {
-    const unlocked =
-        calculateAchievements();
-
-    Object.keys(unlocked).forEach(
-        id => {
-            data.achievements[id] =
-                true;
-        }
-    );
-
-    saveData();
-}
-
-function renderAchievements() {
-    const container =
-        $("#achievementsGrid");
-
-    if (!container) {
-        return;
-    }
-
-    updateAchievements();
-
-    container.innerHTML =
-        ACHIEVEMENT_DEFINITIONS
-            .map(item => {
-                const isUnlocked =
-                    Boolean(
-                        data.achievements[
-                            item.id
-                        ]
-                    );
-
-                return `
-                    <div class="glass-card achievement-card ${
-                        isUnlocked
-                            ? "unlocked"
-                            : "locked"
-                    }">
-
-                        <div class="achievement-icon">
-                            ${item.icon}
                         </div>
-
-                        <div>
-                            <span class="eyebrow">
-                                ${
-                                    isUnlocked
-                                        ? "UNLOCKED"
-                                        : "LOCKED"
-                                }
-                            </span>
-
-                            <h3>
-                                ${escapeHTML(item.title)}
-                            </h3>
-
-                            <p>
-                                ${escapeHTML(item.description)}
-                            </p>
-                        </div>
-
-                        <strong>
-                            ${
-                                isUnlocked
-                                    ? "✓"
-                                    : "🔒"
-                            }
-                        </strong>
 
                     </div>
-                `;
-            })
-            .join("");
-}
 
-/* =========================================================
-   TIMETABLE
-========================================================= */
 
-function setupTimetable() {
-    $("#timetableForm")?.addEventListener(
-        "submit",
-        event => {
-            event.preventDefault();
+                    <div class="hero-visual">
 
-            const title =
-                $("#classTitle")?.value.trim();
+                        <div class="hero-orbit orbit-one"></div>
+                        <div class="hero-orbit orbit-two"></div>
 
-            const subject =
-                $("#classSubject")?.value;
+                        <div class="hero-ai-card">
 
-            const time =
-                $("#classTime")?.value;
+                            <div class="ai-card-glow"></div>
 
-            if (
-                !title ||
-                !subject ||
-                !time
-            ) {
-                showToast(
-                    "Please complete the timetable form.",
-                    "!"
-                );
-
-                return;
-            }
-
-            data.timetable.push({
-                id: createID(),
-                title,
-                subject,
-                time,
-                classNumber:
-                    getCurrentClass(),
-                createdAt:
-                    new Date().toISOString()
-            });
-
-            saveData();
-
-            event.target.reset();
-
-            renderTimetable();
-
-            addActivity(
-                `Added ${title} to timetable`,
-                "🗓️"
-            );
-
-            addXP(
-                5,
-                "Added timetable class"
-            );
-
-            showToast(
-                "Class added to timetable!",
-                "🗓️"
-            );
-        }
-    );
-}
-
-function renderTimetable() {
-    const container =
-        $("#timetableList");
-
-    if (!container) {
-        return;
-    }
-
-    const currentClass =
-        getCurrentClass();
-
-    const items =
-        data.timetable.filter(
-            item =>
-                Number(
-                    item.classNumber
-                ) === currentClass
-        );
-
-    if (!items.length) {
-        container.innerHTML =
-            `<div class="empty-state">
-                <span>🗓️</span>
-                <p>No timetable entries yet.</p>
-            </div>`;
-
-        return;
-    }
-
-    const sorted =
-        [...items].sort(
-            (a, b) =>
-                String(a.time)
-                    .localeCompare(
-                        String(b.time)
-                    )
-        );
-
-    container.innerHTML =
-        sorted
-            .map(item => {
-                return `
-                    <div class="timetable-item">
-
-                        <div class="timetable-time">
-                            ${escapeHTML(
-                                formatTime(item.time)
-                            )}
-                        </div>
-
-                        <div class="timetable-info">
+                            <div class="ai-avatar-large">
+                                ✨
+                            </div>
 
                             <strong>
-                                ${escapeHTML(item.title)}
+                                Mira
                             </strong>
 
                             <span>
-                                ${escapeHTML(item.subject)}
+                                Your AI Teacher
                             </span>
+
+                            <div class="ai-online">
+                                <i></i>
+                                Online
+                            </div>
 
                         </div>
 
-                        <button
-                            class="text-button timetable-delete-button"
-                            type="button"
-                            data-id="${escapeHTML(item.id)}"
-                        >
-                            Delete
-                        </button>
-
                     </div>
-                `;
-            })
-            .join("");
-
-    $$(".timetable-delete-button").forEach(
-        button => {
-            button.addEventListener(
-                "click",
-                () => {
-                    data.timetable =
-                        data.timetable.filter(
-                            item =>
-                                item.id !==
-                                button.dataset.id
-                        );
-
-                    saveData();
-
-                    renderTimetable();
-                    updateDashboard();
-
-                    showToast(
-                        "Timetable item deleted.",
-                        "🗑️"
-                    );
-                }
-            );
-        }
-    );
-}
-
-/* =========================================================
-   SETTINGS
-========================================================= */
-
-function setupSettings() {
-    $("#classSelector")?.addEventListener(
-        "change",
-        event => {
-            changeStudentClass(
-                event.target.value
-            );
-        }
-    );
-
-    $("#themeSelector")?.addEventListener(
-        "change",
-        event => {
-            data.profile.theme =
-                event.target.value;
-
-            applyTheme();
-        }
-    );
-
-    $("#saveSettingsButton")?.addEventListener(
-        "click",
-        saveSettings
-    );
-
-    $("#dailyGoalInput")?.addEventListener(
-        "change",
-        () => {
-            const value =
-                Number(
-                    $("#dailyGoalInput")
-                        ?.value
-                );
-
-            if (
-                Number.isFinite(value) &&
-                value >= 10 &&
-                value <= 300
-            ) {
-                data.dailyGoal =
-                    value;
-
-                saveData();
-                updateDashboard();
-            }
-        }
-    );
-}
-
-function saveSettings() {
-    const name =
-        $("#studentNameInput")
-            ?.value.trim();
-
-    const classNumber =
-        Number(
-            $("#classSelector")
-                ?.value
-        );
-
-    const theme =
-        $("#themeSelector")
-            ?.value ||
-        "light";
-
-    const dailyGoal =
-        Number(
-            $("#dailyGoalInput")
-                ?.value
-        );
-
-    if (name) {
-        data.profile.name =
-            name;
-    }
-
-    if (
-        CLASS_SUBJECTS[classNumber]
-    ) {
-        changeStudentClass(
-            classNumber
-        );
-    }
-
-    data.profile.theme =
-        theme;
-
-    if (
-        Number.isFinite(dailyGoal) &&
-        dailyGoal >= 10 &&
-        dailyGoal <= 300
-    ) {
-        data.dailyGoal =
-            dailyGoal;
-    }
-
-    saveData();
-
-    applyTheme();
-    updateProfileUI();
-    renderAll();
-
-    showToast(
-        "Settings saved successfully!",
-        "✓"
-    );
-}
-
-/* =========================================================
-   SEARCH
-========================================================= */
-
-function setupSearch() {
-    const input =
-        $("#globalSearch");
-
-    if (!input) {
-        return;
-    }
-
-    input.addEventListener(
-        "keydown",
-        event => {
-            if (
-                event.key !==
-                "Enter"
-            ) {
-                return;
-            }
-
-            const query =
-                input.value.trim();
-
-            if (!query) {
-                return;
-            }
-
-            const lower =
-                query.toLowerCase();
-
-            const matches =
-                getCurrentSubjects().filter(
-                    ([name]) =>
-                        name
-                            .toLowerCase()
-                            .includes(lower)
-                );
-
-            if (matches.length) {
-                openSubjectInMira(
-                    matches[0][0]
-                );
-
-                input.value =
-                    "";
-
-                return;
-            }
-
-            navigateTo(
-                "ai-teacher"
-            );
-
-            const chatInput =
-                $("#chatInput");
-
-            if (chatInput) {
-                chatInput.value =
-                    query;
-
-                chatInput.focus();
-            }
-
-            input.value = "";
-        }
-    );
-}
-
-/* =========================================================
-   NOTIFICATIONS
-========================================================= */
-
-function setupNotifications() {
-    $("#notificationButton")?.addEventListener(
-        "click",
-        () => {
-            const count =
-                data.activity.length;
-
-            if (count) {
-                showToast(
-                    `You have ${count} recent learning activities.`,
-                    "🔔"
-                );
-            } else {
-                showToast(
-                    "No new notifications.",
-                    "🔔"
-                );
-            }
-        }
-    );
-}
-
-/* =========================================================
-   MODAL
-========================================================= */
-
-function setupModal() {
-    $("#modalClose")?.addEventListener(
-        "click",
-        closeModal
-    );
-
-    $("#modalOverlay")?.addEventListener(
-        "click",
-        event => {
-            if (
-                event.target ===
-                $("#modalOverlay")
-            ) {
-                closeModal();
-            }
-        }
-    );
-}
-
-function openModal(content) {
-    const overlay =
-        $("#modalOverlay");
-
-    const modalContent =
-        $("#modalContent");
-
-    if (!overlay || !modalContent) {
-        return;
-    }
-
-    modalContent.innerHTML =
-        content;
-
-    overlay.classList.remove(
-        "hidden"
-    );
-}
-
-function closeModal() {
-    $("#modalOverlay")?.classList.add(
-        "hidden"
-    );
-}
-
-/* =========================================================
-   PDF / CLASS / HOMEWORK UI
-========================================================= */
-
-function renderAll() {
-    updateProfileUI();
-    updateDashboard();
-    renderSubjects();
-    renderHomework();
-    renderProgress();
-    renderAchievements();
-    renderTimetable();
-    renderQuizLibrary();
-    populateSubjectSelects();
-}
-
-/* =========================================================
-   RESET / SAFETY
-========================================================= */
-
-function setupKeyboardShortcuts() {
-    document.addEventListener(
-        "keydown",
-        event => {
-            if (
-                event.key ===
-                    "Escape" &&
-                !$("#modalOverlay")?.classList.contains(
-                    "hidden"
-                )
-            ) {
-                closeModal();
-            }
-        }
-    );
-}
-
-/* =========================================================
-   INITIALIZATION
-========================================================= */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    init
-);
-
-async function init() {
-    try {
-        ensureSubjectsForClass();
-
-        applyTheme();
-
-        setupNavigation();
-
-        setupMobileMenu();
-
-        setupStudyButton();
-
-        setupPDFUpload();
-
-        setupGeneratePDF();
-
-        setupHomework();
-
-        setupMira();
-
-        setupTimetable();
-
-        setupSettings();
-
-        setupSearch();
-
-        setupNotifications();
-
-        setupModal();
-
-        setupKeyboardShortcuts();
-
-        updateProfileUI();
-
-        renderAll();
-
-        await renderPDFLists();
-
-        updateAchievements();
-
-        miraInitialized = true;
-
-        console.log(
-            "Aventra repaired successfully."
-        );
-    } catch (error) {
-        console.error(
-            "Aventra initialization error:",
-            error
-        );
-
-        showToast(
-            "Aventra loaded with a minor issue. Check console.",
-            "!"
-        );
-    }
-}
-
-/* =========================================================
-   GLOBAL FUNCTIONS
-   Required because the supplied HTML uses:
-   onclick="generateAIHomework()"
-========================================================= */
-
-window.generateAIHomework =
-    generateAIHomework;
-
-window.openRealPDF =
-    openRealPDF;
-
-window.downloadRealPDF =
-    downloadRealPDF;
-
-window.closeModal =
-    closeModal;
-
-window.openPage =
-    openPage;
-
-window.navigateTo =
-    navigateTo;
-
-window.changeStudentClass =
-    changeStudentClass;
-
-// ============================================================
-// AVENTRA - MY PROGRESS CHARTS
-// ============================================================
-
-let progressPieChart = null;
-let progressBarChart = null;
-
-
-// ============================================================
-// CHART COLORS
-// ============================================================
-
-const PROGRESS_CHART_COLORS = [
-    "#6c4df6",
-    "#8c6cff",
-    "#ff7eb6",
-    "#35c6a6",
-    "#ffb84d",
-    "#4da3ff",
-    "#ef6c8f",
-    "#7ac943"
-];
-
-
-// ============================================================
-// GET SUBJECT PROGRESS
-// ============================================================
-
-function getProgressChartData() {
-
-    const subjects =
-        getCurrentSubjects();
-
-    return subjects.map(
-        ([name, icon]) => {
-
-            const progress =
-                Math.max(
-                    0,
-                    Math.min(
-                        100,
-                        Number(
-                            data.subjects?.[name]?.progress || 0
-                        )
-                    )
-                );
-
-            return {
-                name,
-                icon,
-                progress
-            };
-        }
-    );
-}
-
-
-// ============================================================
-// CREATE CANVAS CONTEXT
-// ============================================================
-
-function getChartContext(id) {
-
-    const canvas =
-        document.getElementById(id);
-
-    if (!canvas) return null;
-
-    return canvas.getContext("2d");
-}
-
-
-// ============================================================
-// DRAW PIE CHART
-// ============================================================
-
-function drawProgressPieChart() {
-
-    const canvas =
-        document.getElementById(
-            "progressPieChart"
-        );
-
-    if (!canvas) return;
-
-
-    const ctx =
-        canvas.getContext("2d");
-
-
-    const subjects =
-        getProgressChartData();
-
-
-    const total =
-        subjects.reduce(
-            (sum, item) =>
-                sum + item.progress,
-            0
-        );
-
-
-    ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
-
-
-    const centerX =
-        canvas.width / 2;
-
-    const centerY =
-        canvas.height / 2;
-
-    const radius =
-        Math.min(
-            canvas.width,
-            canvas.height
-        ) * 0.32;
-
-
-    // Empty state
-    if (!subjects.length || total <= 0) {
-
-        ctx.beginPath();
-
-        ctx.arc(
-            centerX,
-            centerY,
-            radius,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fillStyle =
-            "rgba(108,77,246,0.12)";
-
-        ctx.fill();
-
-
-        ctx.fillStyle =
-            "#6c4df6";
-
-        ctx.font =
-            "700 18px Arial";
-
-        ctx.textAlign =
-            "center";
-
-        ctx.textBaseline =
-            "middle";
-
-        ctx.fillText(
-            "No progress yet",
-            centerX,
-            centerY
-        );
-
-        return;
-    }
-
-
-    let startAngle =
-        -Math.PI / 2;
-
-
-    subjects.forEach(
-        (subject, index) => {
-
-            const slice =
-                (
-                    subject.progress /
-                    total
-                ) *
-                Math.PI *
-                2;
-
-
-            const endAngle =
-                startAngle + slice;
-
-
-            ctx.beginPath();
-
-            ctx.moveTo(
-                centerX,
-                centerY
-            );
-
-            ctx.arc(
-                centerX,
-                centerY,
-                radius,
-                startAngle,
-                endAngle
-            );
-
-            ctx.closePath();
-
-
-            ctx.fillStyle =
-                PROGRESS_CHART_COLORS[
-                    index %
-                    PROGRESS_CHART_COLORS.length
-                ];
-
-
-            ctx.fill();
-
-
-            ctx.strokeStyle =
-                "#ffffff";
-
-            ctx.lineWidth =
-                4;
-
-            ctx.stroke();
-
-
-            startAngle =
-                endAngle;
-        }
-    );
-
-
-    // Center hole
-    ctx.beginPath();
-
-    ctx.arc(
-        centerX,
-        centerY,
-        radius * 0.58,
-        0,
-        Math.PI * 2
-    );
-
-    ctx.fillStyle =
-        getComputedStyle(
-            document.body
-        ).backgroundColor ||
-        "#ffffff";
-
-    ctx.fill();
-
-
-    // Overall percentage
-    const overall =
-        calculateOverallProgress();
-
-
-    ctx.fillStyle =
-        getComputedStyle(
-            document.body
-        ).color || "#222";
-
-
-    ctx.font =
-        "800 28px Arial";
-
-    ctx.textAlign =
-        "center";
-
-    ctx.textBaseline =
-        "middle";
-
-
-    ctx.fillText(
-        `${overall}%`,
-        centerX,
-        centerY - 5
-    );
-
-
-    ctx.font =
-        "500 12px Arial";
-
-
-    ctx.globalAlpha =
-        0.6;
-
-
-    ctx.fillText(
-        "Overall",
-        centerX,
-        centerY + 20
-    );
-
-
-    ctx.globalAlpha =
-        1;
-
-
-    // Legend
-    drawPieLegend(
-        ctx,
-        subjects,
-        canvas
-    );
-}
-
-
-// ============================================================
-// PIE LEGEND
-// ============================================================
-
-function drawPieLegend(
-    ctx,
-    subjects,
-    canvas
-) {
-
-    const startX = 25;
-
-    const startY =
-        canvas.height - 82;
-
-    const columnWidth =
-        (canvas.width - 50) / 2;
-
-
-    ctx.font =
-        "600 12px Arial";
-
-
-    subjects.forEach(
-        (subject, index) => {
-
-            const column =
-                index % 2;
-
-            const row =
-                Math.floor(index / 2);
-
-
-            const x =
-                startX +
-                column *
-                columnWidth;
-
-
-            const y =
-                startY +
-                row * 24;
-
-
-            ctx.fillStyle =
-                PROGRESS_CHART_COLORS[
-                    index %
-                    PROGRESS_CHART_COLORS.length
-                ];
-
-
-            ctx.beginPath();
-
-            ctx.arc(
-                x + 5,
-                y - 4,
-                5,
-                0,
-                Math.PI * 2
-            );
-
-            ctx.fill();
-
-
-            ctx.fillStyle =
-                getComputedStyle(
-                    document.body
-                ).color || "#222";
-
-
-            ctx.globalAlpha =
-                0.8;
-
-
-            ctx.fillText(
-                `${subject.icon} ${subject.name}`,
-                x + 15,
-                y
-            );
-
-
-            ctx.globalAlpha =
-                1;
-        }
-    );
-}
-
-
-// ============================================================
-// DRAW BAR CHART
-// ============================================================
-
-function drawProgressBarChart() {
-
-    const canvas =
-        document.getElementById(
-            "progressBarChart"
-        );
-
-    if (!canvas) return;
-
-
-    const ctx =
-        canvas.getContext("2d");
-
-
-    const subjects =
-        getProgressChartData();
-
-
-    ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
-
-
-    if (!subjects.length) return;
-
-
-    const paddingLeft = 55;
-    const paddingRight = 20;
-    const paddingTop = 25;
-    const paddingBottom = 75;
-
-
-    const chartWidth =
-        canvas.width -
-        paddingLeft -
-        paddingRight;
-
-
-    const chartHeight =
-        canvas.height -
-        paddingTop -
-        paddingBottom;
-
-
-    // Grid
-    ctx.strokeStyle =
-        "rgba(108,77,246,0.12)";
-
-    ctx.lineWidth = 1;
-
-
-    for (
-        let value = 0;
-        value <= 100;
-        value += 20
-    ) {
-
-        const y =
-            paddingTop +
-            chartHeight -
-            (value / 100) *
-            chartHeight;
-
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            paddingLeft,
-            y
-        );
-
-        ctx.lineTo(
-            canvas.width -
-            paddingRight,
-            y
-        );
-
-        ctx.stroke();
-
-
-        ctx.fillStyle =
-            "rgba(50,50,70,0.55)";
-
-        ctx.font =
-            "11px Arial";
-
-        ctx.textAlign =
-            "right";
-
-        ctx.fillText(
-            `${value}%`,
-            paddingLeft - 9,
-            y + 4
-        );
-    }
-
-
-    const slotWidth =
-        chartWidth /
-        subjects.length;
-
-
-    const barWidth =
-        Math.min(
-            48,
-            slotWidth * 0.55
-        );
-
-
-    subjects.forEach(
-        (subject, index) => {
-
-            const barHeight =
-                (
-                    subject.progress /
-                    100
-                ) *
-                chartHeight;
-
-
-            const x =
-                paddingLeft +
-                index *
-                slotWidth +
-                (
-                    slotWidth -
-                    barWidth
-                ) / 2;
-
-
-            const y =
-                paddingTop +
-                chartHeight -
-                barHeight;
-
-
-            // Bar
-            ctx.fillStyle =
-                PROGRESS_CHART_COLORS[
-                    index %
-                    PROGRESS_CHART_COLORS.length
-                ];
-
-
-            ctx.beginPath();
-
-            ctx.roundRect(
-                x,
-                y,
-                barWidth,
-                barHeight,
-                8
-            );
-
-            ctx.fill();
-
-
-            // Percentage
-            ctx.fillStyle =
-                getComputedStyle(
-                    document.body
-                ).color || "#222";
-
-
-            ctx.font =
-                "700 11px Arial";
-
-            ctx.textAlign =
-                "center";
-
-
-            ctx.fillText(
-                `${subject.progress}%`,
-                x +
-                    barWidth / 2,
-                y - 8
-            );
-
-
-            // Subject label
-            ctx.font =
-                "11px Arial";
-
-
-            ctx.globalAlpha =
-                0.7;
-
-
-            ctx.fillText(
-                subject.name.length > 10
-                    ? subject.name.substring(
-                        0,
-                        9
-                    ) + "…"
-                    : subject.name,
-                x +
-                    barWidth / 2,
-                paddingTop +
-                    chartHeight +
-                    25
-            );
-
-
-            ctx.globalAlpha =
-                1;
-        }
-    );
-}
-
-
-// ============================================================
-// SUBJECT PROGRESS LIST
-// ============================================================
-
-function renderProgressSubjectList() {
-
-    const container =
-        document.getElementById(
-            "progressSubjectList"
-        );
-
-    if (!container) return;
-
-
-    const subjects =
-        getProgressChartData();
-
-
-    container.innerHTML = "";
-
-
-    subjects.forEach(
-        subject => {
-
-            const item =
-                document.createElement(
-                    "div"
-                );
-
-
-            item.className =
-                "progress-subject-item";
-
-
-            item.innerHTML = `
-                <div class="progress-subject-top">
-
-                    <div class="progress-subject-name">
-                        <span>
-                            ${escapeHTML(subject.icon)}
-                        </span>
-
-                        <span>
-                            ${escapeHTML(subject.name)}
-                        </span>
-                    </div>
-
-                    <strong class="progress-subject-percent">
-                        ${subject.progress}%
-                    </strong>
 
                 </div>
 
 
-                <div class="progress-progress-track">
+                <!-- STATS -->
+
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon purple">
+                            📚
+                        </div>
+
+                        <div class="stat-data">
+
+                            <span>
+                                Subjects
+                            </span>
+
+                            <strong id="dashboardSubjects">
+                                6
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon blue">
+                            📈
+                        </div>
+
+                        <div class="stat-data">
+
+                            <span>
+                                Overall Progress
+                            </span>
+
+                            <strong>
+                                <span id="dashboardProgress">
+                                    0
+                                </span>%
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon orange">
+                            🔥
+                        </div>
+
+                        <div class="stat-data">
+
+                            <span>
+                                Study Streak
+                            </span>
+
+                            <strong>
+                                <span id="dashboardStreak">
+                                    0
+                                </span>
+                                Days
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon green">
+                            ⭐
+                        </div>
+
+                        <div class="stat-data">
+
+                            <span>
+                                XP Earned
+                            </span>
+
+                            <strong id="dashboardXP">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DASHBOARD GRID -->
+
+                <div class="dashboard-grid">
+
+
+                    <!-- DAILY GOAL -->
+
+                    <div class="glass-card daily-goal-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    TODAY
+                                </span>
+
+                                <h3>
+                                    Daily Study Goal
+                                </h3>
+
+                            </div>
+
+                            <span class="card-icon">
+                                🎯
+                            </span>
+
+                        </div>
+
+
+                        <div class="goal-content">
+
+                            <div class="progress-circle">
+
+                                <svg
+                                    viewBox="0 0 120 120"
+                                >
+
+                                    <circle
+                                        class="circle-bg"
+                                        cx="60"
+                                        cy="60"
+                                        r="50"
+                                    ></circle>
+
+                                    <circle
+                                        id="goalCircle"
+                                        class="circle-progress"
+                                        cx="60"
+                                        cy="60"
+                                        r="50"
+                                    ></circle>
+
+                                </svg>
+
+                                <div class="circle-text">
+
+                                    <strong>
+                                        <span id="goalPercentage">
+                                            0
+                                        </span>%
+                                    </strong>
+
+                                    <span>
+                                        Complete
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="goal-details">
+
+                                <p>
+                                    <strong id="goalMinutes">
+                                        0
+                                    </strong>
+                                    minutes studied
+                                </p>
+
+                                <span>
+                                    Daily target:
+                                    <strong id="goalTarget">
+                                        60
+                                    </strong>
+                                    minutes
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SUBJECT PROGRESS -->
+
+                    <div class="glass-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    YOUR CLASS
+                                </span>
+
+                                <h3>
+                                    Subject Progress
+                                </h3>
+
+                            </div>
+
+                            <button
+                                class="text-button"
+                                type="button"
+                                data-page-link="subjects"
+                            >
+                                View All
+                            </button>
+
+                        </div>
+
+                        <div
+                            id="dashboardSubjectList"
+                            class="subject-progress-list"
+                        ></div>
+
+                    </div>
+
+
+                    <!-- RECENT ACTIVITY -->
+
+                    <div class="glass-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    ACTIVITY
+                                </span>
+
+                                <h3>
+                                    Recent Activity
+                                </h3>
+
+                            </div>
+
+                        </div>
+
+                        <div
+                            id="recentActivity"
+                            class="activity-list"
+                        ></div>
+
+                    </div>
+
+
+                    <!-- UPCOMING -->
+
+                    <div class="glass-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    SCHEDULE
+                                </span>
+
+                                <h3>
+                                    Upcoming Classes
+                                </h3>
+
+                            </div>
+
+                            <button
+                                class="text-button"
+                                type="button"
+                                data-page-link="timetable"
+                            >
+                                Timetable
+                            </button>
+
+                        </div>
+
+                        <div
+                            id="upcomingClasses"
+                            class="upcoming-list"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 AI TEACHER
+            ================================================== -->
+
+            <section
+                id="page-ai-teacher"
+                class="page"
+            >
+
+                <div class="ai-page-layout">
+
+
+                    <!-- AI SIDEBAR -->
+
+                    <aside class="ai-tools-panel">
+
+                        <div class="ai-profile-card">
+
+                            <div class="ai-avatar-large">
+                                ✨
+                            </div>
+
+                            <span class="eyebrow">
+                                AI TEACHER
+                            </span>
+
+                            <h2>
+                                Mira
+                            </h2>
+
+                            <p>
+                                Your personal AI teacher for
+                                Class 6–12.
+                            </p>
+
+                            <div class="ai-online">
+                                <i></i>
+                                Ready to teach
+                            </div>
+
+                        </div>
+
+
+                        <div class="ai-tools-list">
+
+                            <div class="tools-title">
+                                QUICK TOOLS
+                            </div>
+
+
+                            <button
+                                class="ai-tool"
+                                type="button"
+                                data-ai-prompt="Explain today's most important topic for my selected class in a simple way."
+                            >
+
+                                <span>
+                                    💡
+                                </span>
+
+                                <div>
+                                    <strong>
+                                        Explain a Topic
+                                    </strong>
+
+                                    <small>
+                                        Get a simple explanation
+                                    </small>
+                                </div>
+
+                            </button>
+
+
+                            <button
+                                class="ai-tool"
+                                type="button"
+                                data-ai-prompt="Give me 5 useful study tips for my current class."
+                            >
+
+                                <span>
+                                    🎯
+                                </span>
+
+                                <div>
+                                    <strong>
+                                        Study Tips
+                                    </strong>
+
+                                    <small>
+                                        Smart learning strategies
+                                    </small>
+                                </div>
+
+                            </button>
+
+
+                            <button
+                                class="ai-tool"
+                                type="button"
+                                data-ai-prompt="Give me a short revision plan for today."
+                            >
+
+                                <span>
+                                    📖
+                                </span>
+
+                                <div>
+                                    <strong>
+                                        Quick Revision
+                                    </strong>
+
+                                    <small>
+                                        Revise faster
+                                    </small>
+                                </div>
+
+                            </button>
+
+
+                            <button
+                                class="ai-tool"
+                                type="button"
+                                data-ai-prompt="Give me 5 practice questions from my selected class."
+                            >
+
+                                <span>
+                                    🧠
+                                </span>
+
+                                <div>
+                                    <strong>
+                                        Practice
+                                    </strong>
+
+                                    <small>
+                                        Test your knowledge
+                                    </small>
+                                </div>
+
+                            </button>
+
+                        </div>
+
+                    </aside>
+
+
+                    <!-- CHAT -->
+
+                    <div class="ai-chat-panel">
+
+                        <div class="chat-header">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    MIRA AI
+                                </span>
+
+                                <h2>
+                                    Ask Mira Anything
+                                </h2>
+
+                                <p>
+                                    Class-aware AI learning assistant
+                                </p>
+
+                            </div>
+
+                            <div class="chat-status">
+                                <i></i>
+                                Online
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            id="chatMessages"
+                            class="chat-messages"
+                        >
+
+                            <div class="chat-message mira-message">
+
+                                <div class="message-avatar">
+                                    ✨
+                                </div>
+
+                                <div class="message-bubble">
+
+                                    <strong>
+                                        Mira
+                                    </strong>
+
+                                    <p>
+                                        Hi! I'm Mira 👋
+                                        Tell me what you want
+                                        to learn today.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <form
+                            id="chatForm"
+                            class="chat-form"
+                        >
+
+                            <input
+                                id="chatInput"
+                                type="text"
+                                placeholder="Ask Mira a question..."
+                                autocomplete="off"
+                            >
+
+                            <button
+                                type="submit"
+                                class="send-button"
+                                aria-label="Send message"
+                            >
+                                ➤
+                            </button>
+
+                        </form>
+
+
+                        <div class="chat-hint">
+                            Mira answers according to your
+                            selected class.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 SUBJECTS
+            ================================================== -->
+
+            <section
+                id="page-subjects"
+                class="page"
+            >
+
+                <div class="page-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            MY LEARNING
+                        </span>
+
+                        <h2>
+                            My Subjects
+                        </h2>
+
+                        <p>
+                            Subjects and progress for your
+                            selected class.
+                        </p>
+
+                    </div>
+
+            
+
+                </div>
+
+
+                <div
+                    id="subjectsGrid"
+                    class="subjects-grid"
+                ></div>
+
+            </section>
+
+
+            <!-- =================================================
+                 PDF LIBRARY
+            ================================================== -->
+
+            <section
+                id="page-pdf-library"
+                class="page"
+            >
+
+                <div class="page-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            SMART PDF LAB
+                        </span>
+
+                        <h2>
+                            PDF Library
+                        </h2>
+
+                        <p>
+                            Mira can create complete study
+                            PDFs for your class.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- AI PDF GENERATOR -->
+
+                <div class="glass-card ai-pdf-card">
+
+                    <div class="ai-pdf-header">
+
+                        <div class="ai-pdf-icon">
+                            ✨
+                        </div>
+
+                        <div>
+
+                            <span class="eyebrow">
+                                MIRA AI
+                            </span>
+
+                            <h2>
+                                Generate a Study PDF
+                            </h2>
+
+                            <p>
+                                Select a subject and topic.
+                                Mira will create notes and
+                                turn them into a real PDF.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="ai-pdf-form">
+
+                        <div class="form-group">
+
+                            <label for="aiPdfSubject">
+                                Subject
+                            </label>
+
+                            <select id="aiPdfSubject">
+
+                                <option value="">
+                                    Select Subject
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="aiPdfTopic">
+                                Topic
+                            </label>
+
+                            <input
+                                id="aiPdfTopic"
+                                type="text"
+                                placeholder="Example: Fractions"
+                                autocomplete="off"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        id="generatePdfButton"
+                        class="primary-btn ai-generate-pdf-btn"
+                        type="button"
+                    >
+
+                        <span>
+                            ✨
+                        </span>
+
+                        Generate PDF with Mira
+
+                    </button>
+
 
                     <div
-                        class="progress-progress-fill"
-                        style="width:${subject.progress}%"
+                        id="generatedPdfStatus"
+                        class="ai-pdf-status"
                     ></div>
 
                 </div>
 
 
-                <div class="progress-subject-meta">
+                <!-- GENERATED -->
 
-                    <span>
-                        ${data.subjects?.[subject.name]?.studiedMinutes || 0}
-                        min studied
-                    </span>
+                <div class="section-heading">
 
-                    <span>
-                        ${data.subjects?.[subject.name]?.quizzes || 0}
-                        quizzes
-                    </span>
+                    <div>
+
+                        <span class="eyebrow">
+                            MIRA GENERATED
+                        </span>
+
+                        <h3>
+                            My AI PDFs
+                        </h3>
+
+                    </div>
 
                 </div>
-            `;
 
 
-            container.appendChild(item);
-        }
-    );
-}
+                <div
+                    id="generatedPdfList"
+                    class="pdf-grid"
+                ></div>
 
 
-// ============================================================
-// PROGRESS STATS
-// ============================================================
+                <!-- UPLOAD -->
 
-function updateProgressStats() {
+                <div class="glass-card upload-pdf-card">
 
-    const overall =
-        calculateOverallProgress();
+                    <div class="section-icon">
+                        📄
+                    </div>
 
+                    <div>
 
-    const overallElement =
-        document.getElementById(
-            "progressOverallValue"
-        );
+                        <h3>
+                            Add Your Own PDF
+                        </h3>
 
+                        <p>
+                            Keep your personal study PDFs
+                            inside Aventra.
+                        </p>
 
-    if (overallElement) {
-        overallElement.textContent =
-            `${overall}%`;
-    }
-
-
-    const studyTime =
-        Number(
-            data.studyMinutes || 0
-        );
+                    </div>
 
 
-    const studyTimeElement =
-        document.getElementById(
-            "progressStudyTime"
-        );
+                    <label
+                        for="pdfInput"
+                        class="secondary-btn"
+                    >
+                        Choose PDF
+                    </label>
+
+                    <input
+                        id="pdfInput"
+                        type="file"
+                        accept="application/pdf"
+                        hidden
+                    >
+
+                </div>
 
 
-    if (studyTimeElement) {
+                <!-- ALL PDFS -->
 
-        if (studyTime >= 60) {
+                <div class="section-heading">
 
-            const hours =
-                Math.floor(
-                    studyTime / 60
-                );
+                    <div>
 
-            const minutes =
-                studyTime % 60;
+                        <span class="eyebrow">
+                            LIBRARY
+                        </span>
 
+                        <h3>
+                            All PDFs
+                        </h3>
 
-            studyTimeElement.textContent =
-                `${hours}h ${minutes}m`;
+                    </div>
 
-        } else {
-
-            studyTimeElement.textContent =
-                `${studyTime} min`;
-        }
-    }
+                </div>
 
 
-    const streakElement =
-        document.getElementById(
-            "progressStreak"
-        );
+                <div
+                    id="pdfList"
+                    class="pdf-grid"
+                ></div>
+
+            </section>
 
 
-    if (streakElement) {
+            <!-- =================================================
+                 HOMEWORK
+            ================================================== -->
 
-        streakElement.textContent =
-            `${Number(data.streak || 0)} days`;
-    }
+            <section
+                id="page-homework"
+                class="page"
+            >
 
+                <div class="page-header">
 
-    const xpElement =
-        document.getElementById(
-            "progressXP"
-        );
+                    <div>
 
+                        <span class="eyebrow">
+                            ASSIGNMENTS
+                        </span>
 
-    if (xpElement) {
+                        <h2>
+                            Homework
+                        </h2>
 
-        xpElement.textContent =
-            `${Number(data.xp || 0)} XP`;
-    }
-}
+                        <p>
+                            Create your own homework or let
+                            Mira generate it.
+                        </p>
 
+                    </div>
 
-// ============================================================
-// COMPLETE PROGRESS RENDER
-// ============================================================
-
-function renderProgressPage() {
-
-    updateProgressStats();
-
-    renderProgressSubjectList();
-
-    drawProgressPieChart();
-
-    drawProgressBarChart();
-}
+                </div>
 
 
+                <div class="homework-layout">
 
-/* ==========================================
-   AVENTRA MOBILE SIDEBAR CONTROLS
-========================================== */
 
-(() => {
-    const menuButton = document.getElementById("menuButton");
-    const sidebar = document.getElementById("sidebar");
-    const overlay = document.getElementById("sidebarOverlay");
+                    <!-- CREATE -->
 
-    if (!menuButton || !sidebar || !overlay) {
-        console.warn(
-            "Aventra mobile menu: required HTML elements were not found."
-        );
-        return;
-    }
+                    <div class="glass-card">
 
-    const mobileScreen = () => window.innerWidth <= 768;
+                        <div class="card-heading">
 
-    function openSidebar() {
-        if (!mobileScreen()) return;
+                            <div>
 
-        sidebar.classList.add("mobile-sidebar-open");
-        overlay.classList.add("mobile-overlay-visible");
+                                <span class="eyebrow">
+                                    CREATE
+                                </span>
 
-        menuButton.setAttribute("aria-expanded", "true");
-        menuButton.setAttribute("aria-label", "Close menu");
+                                <h3>
+                                    Add Homework
+                                </h3>
 
-        document.body.style.overflow = "hidden";
-    }
+                            </div>
 
-    function closeSidebar() {
-        sidebar.classList.remove("mobile-sidebar-open");
-        overlay.classList.remove("mobile-overlay-visible");
+                            <span class="card-icon">
+                                📝
+                            </span>
 
-        menuButton.setAttribute("aria-expanded", "false");
-        menuButton.setAttribute("aria-label", "Open menu");
+                        </div>
 
-        document.body.style.overflow = "";
-    }
 
-    menuButton.addEventListener("click", () => {
-        const isOpen = sidebar.classList.contains(
-            "mobile-sidebar-open"
-        );
+                        <form id="homeworkForm">
 
-        if (isOpen) {
-            closeSidebar();
-        } else {
-            openSidebar();
-        }
-    });
+                            <div class="form-group">
 
-    overlay.addEventListener("click", closeSidebar);
+                                <label for="homeworkTitle">
+                                    Homework Title
+                                </label>
 
-    sidebar.addEventListener("click", (event) => {
-        const navButton = event.target.closest(
-            ".nav-item, [data-page-link]"
-        );
+                                <input
+                                    id="homeworkTitle"
+                                    type="text"
+                                    placeholder="Example: Maths Practice"
+                                    required
+                                >
 
-        if (navButton && mobileScreen()) {
-            closeSidebar();
-        }
-    });
+                            </div>
 
-    document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") {
-            closeSidebar();
-        }
-    });
 
-    window.addEventListener("resize", () => {
-        if (!mobileScreen()) {
-            closeSidebar();
-        }
-    });
-})();
+                            <div class="form-group">
 
-/* =========================================================
-   END
-========================================================= */
+                                <label for="homeworkSubject">
+                                    Subject
+                                </label>
+
+                                <select
+                                    id="homeworkSubject"
+                                    required
+                                ></select>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="homeworkDate">
+                                    Due Date
+                                </label>
+
+                                <input
+                                    id="homeworkDate"
+                                    type="date"
+                                >
+
+                            </div>
+
+
+                            <button
+                                type="submit"
+                                class="primary-btn"
+                            >
+                                Add Homework
+                            </button>
+
+                        </form>
+
+                    </div>
+
+
+                    <!-- AI -->
+
+                    <div class="glass-card ai-homework-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    MIRA AI
+                                </span>
+
+                                <h3>
+                                    AI Homework Generator
+                                </h3>
+
+                            </div>
+
+                            <span class="card-icon">
+                                ✨
+                            </span>
+
+                        </div>
+
+
+                        <p class="card-description">
+                            Mira can automatically create
+                            class-appropriate homework with
+                            questions and answers.
+                        </p>
+
+
+                        <div class="ai-homework-preview">
+
+                            <div>
+                                <span>
+                                    CLASS
+                                </span>
+
+                                <strong id="homeworkAIClass">
+                                    Class 6
+                                </strong>
+                            </div>
+
+                            <div>
+                                <span>
+                                    SUBJECT
+                                </span>
+
+                                <strong id="homeworkAISubject">
+                                    Select
+                                </strong>
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            id="generateHomeworkButton"
+                            class="primary-btn"
+                            type="button"
+                            onclick="generateAIHomework()"
+                        >
+
+                            <span>
+                                ✨
+                            </span>
+
+                            Generate with Mira
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            YOUR TASKS
+                        </span>
+
+                        <h3>
+                            Homework List
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="homeworkList"
+                    class="homework-list"
+                ></div>
+
+            </section>
+
+
+            <!-- =================================================
+                 QUIZZES
+            ================================================== -->
+
+            <section
+                id="page-quizzes"
+                class="page"
+            >
+
+                <div class="page-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            TEST YOURSELF
+                        </span>
+
+                        <h2>
+                            Tests & Quizzes
+                        </h2>
+
+                        <p>
+                            10 quizzes for your selected class,
+                            plus AI-generated quizzes by Mira.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- AI QUIZ GENERATOR -->
+
+                <div class="glass-card ai-quiz-generator">
+
+                    <div class="card-heading">
+
+                        <div>
+
+                            <span class="eyebrow">
+                                MIRA AI
+                            </span>
+
+                            <h3>
+                                Generate Custom Quiz
+                            </h3>
+
+                        </div>
+
+                        <span class="card-icon">
+                            🧠
+                        </span>
+
+                    </div>
+
+
+                    <div class="ai-quiz-form">
+
+                        <div class="form-group">
+
+                            <label for="aiQuizSubject">
+                                Subject
+                            </label>
+
+                            <select id="aiQuizSubject"></select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="aiQuizTopic">
+                                Topic
+                            </label>
+
+                            <input
+                                id="aiQuizTopic"
+                                type="text"
+                                placeholder="Example: Light"
+                            >
+
+                        </div>
+
+
+                        <button
+                            id="generateQuizButton"
+                            class="primary-btn"
+                            type="button"
+                        >
+
+                            ✨ Generate AI Quiz
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- 10 QUIZZES -->
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            QUIZ LIBRARY
+                        </span>
+
+                        <h3>
+                            10 Quizzes
+                        </h3>
+
+                    </div>
+
+                    <div class="quiz-count-pill">
+                        10 Available
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="quizGrid"
+                    class="quiz-grid"
+                ></div>
+
+
+                <!-- QUIZ PLAYER -->
+
+                <div
+                    id="quizPlayer"
+                    class="quiz-player hidden"
+                ></div>
+
+            </section>
+
+
+           <section class="page" id="page-progress">
+
+    <div class="page-header">
+        <div>
+            <span class="eyebrow">YOUR LEARNING JOURNEY</span>
+            <h1>My Progress</h1>
+            <p>Track your learning progress across all subjects.</p>
+        </div>
+    </div>
+
+
+    <!-- =====================================================
+         PROGRESS OVERVIEW
+    ====================================================== -->
+
+    <div class="progress-overview-grid">
+
+        <div class="progress-stat-card">
+            <div class="progress-stat-icon">📊</div>
+
+            <div>
+                <span>Overall Progress</span>
+                <strong id="progressOverallValue">0%</strong>
+            </div>
+        </div>
+
+
+        <div class="progress-stat-card">
+            <div class="progress-stat-icon">⏱️</div>
+
+            <div>
+                <span>Study Time</span>
+                <strong id="progressStudyTime">0 min</strong>
+            </div>
+        </div>
+
+
+        <div class="progress-stat-card">
+            <div class="progress-stat-icon">🔥</div>
+
+            <div>
+                <span>Study Streak</span>
+                <strong id="progressStreak">0 days</strong>
+            </div>
+        </div>
+
+
+        <div class="progress-stat-card">
+            <div class="progress-stat-icon">⭐</div>
+
+            <div>
+                <span>Total XP</span>
+                <strong id="progressXP">0 XP</strong>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         CHARTS
+    ====================================================== -->
+
+    <div class="progress-chart-grid">
+
+        <!-- PIE CHART -->
+
+        <div class="progress-chart-card">
+
+            <div class="progress-chart-header">
+                <div>
+                    <span class="chart-eyebrow">
+                        SUBJECT DISTRIBUTION
+                    </span>
+
+                    <h2>Progress Overview</h2>
+
+                    <p>
+                        Your current progress by subject.
+                    </p>
+                </div>
+
+                <span class="chart-badge">🥧 PIE</span>
+            </div>
+
+
+            <div class="pie-chart-wrapper">
+
+                <canvas
+                    id="progressPieChart"
+                    width="420"
+                    height="420"
+                ></canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- BAR CHART -->
+
+        <div class="progress-chart-card">
+
+            <div class="progress-chart-header">
+                <div>
+                    <span class="chart-eyebrow">
+                        SUBJECT PERFORMANCE
+                    </span>
+
+                    <h2>Subject Progress</h2>
+
+                    <p>
+                        Compare your progress in each subject.
+                    </p>
+                </div>
+
+                <span class="chart-badge">📊 BAR</span>
+            </div>
+
+
+            <div class="bar-chart-wrapper">
+
+                <canvas
+                    id="progressBarChart"
+                    width="700"
+                    height="420"
+                ></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SUBJECT PROGRESS
+    ====================================================== -->
+
+    <div class="progress-subject-section">
+
+        <div class="section-heading">
+            <div>
+                <span class="chart-eyebrow">
+                    DETAILED ANALYSIS
+                </span>
+
+                <h2>Subject Performance</h2>
+            </div>
+        </div>
+
+
+        <div
+            id="progressSubjectList"
+            class="progress-subject-list"
+        ></div>
+
+    </div>
+
+
+    <!-- =====================================================
+         EMPTY STATE
+    ====================================================== -->
+
+    <div
+        id="progressEmptyState"
+        class="progress-empty-state"
+        hidden
+    >
+        <div class="empty-icon">📚</div>
+
+        <h3>No progress yet</h3>
+
+        <p>
+            Start studying and your progress will appear here.
+        </p>
+
+        <button
+            type="button"
+            data-page-link="subjects"
+            class="primary-button"
+        >
+            Start Learning
+        </button>
+    </div>
+
+</section>
+            <!-- =================================================
+                 ACHIEVEMENTS
+            ================================================== -->
+
+            <section
+                id="page-achievements"
+                class="page"
+            >
+
+                <div class="page-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            REWARDS
+                        </span>
+
+                        <h2>
+                            Achievements
+                        </h2>
+
+                        <p>
+                            Keep learning and unlock new
+                            achievements.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="achievementsGrid"
+                    class="achievements-grid"
+                ></div>
+
+            </section>
+
+
+            <!-- =================================================
+                 TIMETABLE
+            ================================================== -->
+
+            <section
+                id="page-timetable"
+                class="page"
+            >
+
+                <div class="page-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            PLAN YOUR DAY
+                        </span>
+
+                        <h2>
+                            Timetable
+                        </h2>
+
+                        <p>
+                            Organize your classes and study time.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="timetable-layout">
+
+
+                    <div class="glass-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    SCHEDULE
+                                </span>
+
+                                <h3>
+                                    Add Class
+                                </h3>
+
+                            </div>
+
+                            <span class="card-icon">
+                                🗓️
+                            </span>
+
+                        </div>
+
+
+                        <form id="timetableForm">
+
+                            <div class="form-group">
+
+                                <label for="classTitle">
+                                    Class Name
+                                </label>
+
+                                <input
+                                    id="classTitle"
+                                    type="text"
+                                    placeholder="Example: Maths Class"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="classSubject">
+                                    Subject
+                                </label>
+
+                                <select
+                                    id="classSubject"
+                                    required
+                                ></select>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="classTime">
+                                    Time
+                                </label>
+
+                                <input
+                                    id="classTime"
+                                    type="time"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <button
+                                class="primary-btn"
+                                type="submit"
+                            >
+                                Add to Timetable
+                            </button>
+
+                        </form>
+
+                    </div>
+
+
+                    <div class="glass-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    UPCOMING
+                                </span>
+
+                                <h3>
+                                    My Schedule
+                                </h3>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            id="timetableList"
+                            class="timetable-list"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 LIVE CLASS
+            ================================================== -->
+
+            <section
+                id="page-live-class"
+                class="page"
+            >
+
+                <div class="live-coming-soon">
+
+                    <div class="live-background-ring ring-one"></div>
+                    <div class="live-background-ring ring-two"></div>
+                    <div class="live-background-ring ring-three"></div>
+
+
+                    <div class="live-camera-icon">
+
+                        <div class="camera-body">
+                            🎥
+                        </div>
+
+                    </div>
+
+
+                    <span class="eyebrow">
+                        LIVE CLASS
+                    </span>
+
+
+                    <h2>
+                        Coming Soon
+                    </h2>
+
+
+                    <p>
+                        Interactive live classes are being
+                        prepared for Aventra.
+                    </p>
+
+
+                    <div class="live-status-pill">
+
+                        <span class="pulse-dot"></span>
+
+                        LIVE CLASS IS IN DEVELOPMENT
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- =================================================
+                 SETTINGS
+            ================================================== -->
+
+            <section
+                id="page-settings"
+                class="page"
+            >
+
+                <div class="page-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            ACCOUNT
+                        </span>
+
+                        <h2>
+                            Settings
+                        </h2>
+
+                        <p>
+                            Manage your Aventra learning
+                            preferences.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-layout">
+
+
+                    <!-- PROFILE -->
+
+                    <div class="glass-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    PROFILE
+                                </span>
+
+                                <h3>
+                                    Student Profile
+                                </h3>
+
+                            </div>
+
+                            <span class="card-icon">
+                                👤
+                            </span>
+
+                        </div>
+
+
+                        <div class="settings-profile">
+
+                            <div class="settings-avatar">
+                                S
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    <span id="settingsName">
+                                        Student
+                                    </span>
+                                </strong>
+
+                                <span>
+                                    Aventra Student
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="studentNameInput">
+                                Name
+                            </label>
+
+                            <input
+                                id="studentNameInput"
+                                type="text"
+                                placeholder="Your name"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="classSelector">
+                                Select Class
+                            </label>
+
+                            <select id="classSelector">
+
+                                <option value="6">
+                                    Class 6
+                                </option>
+
+                                <option value="7">
+                                    Class 7
+                                </option>
+
+                                <option value="8">
+                                    Class 8
+                                </option>
+
+                                <option value="9">
+                                    Class 9
+                                </option>
+
+                                <option value="10">
+                                    Class 10
+                                </option>
+
+                                <option value="11">
+                                    Class 11
+                                </option>
+
+                                <option value="12">
+                                    Class 12
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="themeSelector">
+                                Theme
+                            </label>
+
+                            <select id="themeSelector">
+
+                                <option value="dark">
+                                    Dark Premium
+                                </option>
+
+                                <option value="light">
+                                    Light
+                                </option>
+
+                                <option value="midnight">
+                                    Midnight
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <button
+                            id="saveSettingsButton"
+                            class="primary-btn"
+                            type="button"
+                        >
+                            Save Settings
+                        </button>
+
+                    </div>
+
+
+                    <!-- STUDY SETTINGS -->
+
+                    <div class="glass-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    LEARNING
+                                </span>
+
+                                <h3>
+                                    Study Settings
+                                </h3>
+
+                            </div>
+
+                            <span class="card-icon">
+                                🎯
+                            </span>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="dailyGoalInput">
+                                Daily Study Goal
+                            </label>
+
+                            <input
+                                id="dailyGoalInput"
+                                type="number"
+                                min="10"
+                                max="300"
+                                value="60"
+                            >
+
+                            <small>
+                                Set your daily study target
+                                in minutes.
+                            </small>
+
+                        </div>
+
+
+                        <div class="settings-info-box">
+
+                            <span>
+                                💾
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Your progress is saved
+                                </strong>
+
+                                <p>
+                                    Aventra keeps separate
+                                    learning data for each
+                                    class from Class 6 to 12.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     TOAST
+========================================================== -->
+
+<div
+    id="toast"
+    class="toast"
+    role="status"
+    aria-live="polite"
+>
+
+    <span id="toastIcon">
+        ✓
+    </span>
+
+    <span id="toastMessage">
+        Done
+    </span>
+
+</div>
+
+
+<!-- =========================================================
+     MODAL
+========================================================== -->
+
+<div
+    id="modalOverlay"
+    class="modal-overlay hidden"
+>
+
+    <div
+        id="modal"
+        class="modal"
+    >
+
+        <button
+            id="modalClose"
+            class="modal-close"
+            type="button"
+        >
+            ×
+        </button>
+
+        <div id="modalContent"></div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     SCRIPTS
+========================================================== -->
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
