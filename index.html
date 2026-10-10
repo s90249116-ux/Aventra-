@@ -1,4 +1,4 @@
-/* =========================================================
+/* =============================================
    AVENTRA STUDY
    COMPLETE REPAIRED JAVASCRIPT
    Works with the supplied Aventra index.html
@@ -8,13 +8,13 @@
    Homework
    10 quizzes
    Mira AI foundation
-========================================================= */
+================================================ */
 
 "use strict";
 
-/* =========================================================
+/* =============================================
    CONFIG
-========================================================= */
+================================================ */
 
 const API_URL = "https://aventra-backend-1-t8le.onrender.com";
 const STORAGE_KEY = "aventraStudyData";
@@ -23,7 +23,7 @@ const PDF_DB_NAME = "AventraPDFDatabase";
 const PDF_DB_VERSION = 1;
 const PDF_STORE_NAME = "pdfFiles";
 
-/* =========================================================
+/* ======================================================
    DEFAULT DATA
 ========================================================= */
 
@@ -5591,6 +5591,85 @@ function renderProgressPage() {
 
     drawProgressBarChart();
 }
+
+
+
+/* ==========================================
+   AVENTRA MOBILE SIDEBAR CONTROLS
+========================================== */
+
+(() => {
+    const menuButton = document.getElementById("menuButton");
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+
+    if (!menuButton || !sidebar || !overlay) {
+        console.warn(
+            "Aventra mobile menu: required HTML elements were not found."
+        );
+        return;
+    }
+
+    const mobileScreen = () => window.innerWidth <= 768;
+
+    function openSidebar() {
+        if (!mobileScreen()) return;
+
+        sidebar.classList.add("mobile-sidebar-open");
+        overlay.classList.add("mobile-overlay-visible");
+
+        menuButton.setAttribute("aria-expanded", "true");
+        menuButton.setAttribute("aria-label", "Close menu");
+
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeSidebar() {
+        sidebar.classList.remove("mobile-sidebar-open");
+        overlay.classList.remove("mobile-overlay-visible");
+
+        menuButton.setAttribute("aria-expanded", "false");
+        menuButton.setAttribute("aria-label", "Open menu");
+
+        document.body.style.overflow = "";
+    }
+
+    menuButton.addEventListener("click", () => {
+        const isOpen = sidebar.classList.contains(
+            "mobile-sidebar-open"
+        );
+
+        if (isOpen) {
+            closeSidebar();
+        } else {
+            openSidebar();
+        }
+    });
+
+    overlay.addEventListener("click", closeSidebar);
+
+    sidebar.addEventListener("click", (event) => {
+        const navButton = event.target.closest(
+            ".nav-item, [data-page-link]"
+        );
+
+        if (navButton && mobileScreen()) {
+            closeSidebar();
+        }
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+            closeSidebar();
+        }
+    });
+
+    window.addEventListener("resize", () => {
+        if (!mobileScreen()) {
+            closeSidebar();
+        }
+    });
+})();
 
 /* =========================================================
    END
